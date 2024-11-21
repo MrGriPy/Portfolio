@@ -1,0 +1,193 @@
+:root {
+    --text-box-width: 1000px;
+    --text-box-height: auto;
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Press Start 2P', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+body, h1, h2, h3, p, a {
+    font-family: 'VT323', monospace;
+    color: white;
+}
+
+.title {
+    position: absolute;
+    bottom: -60px;
+    font-size: 30px;
+    color: orange;
+    font-family: 'VT323', monospace;
+    animation: slideUp 1s forwards;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.title:hover {
+    color: yellow;
+}
+
+@keyframes slideUp {
+    0% {
+        bottom: -60px;
+    }
+    100% {
+        bottom: 50vh;  /* Remontée au centre */
+    }
+}
+
+/* Interface */
+.interface {
+    position: relative;
+    width: var(--text-box-width);
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.interface.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.text-box {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 3px solid white;
+    padding: 20px;
+    width: var(--text-box-width);
+    max-height: 70vh;
+    overflow-y: auto;
+    font-size: 22px;
+    color: white;
+    text-align: left;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.text-box > * {
+    transform: scaleY(-1);
+}
+
+.button-container {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+.btn {
+    background-color: transparent;
+    border: 2px solid orange;
+    color: orange;
+    padding: 10px 20px;
+    font-size: 22px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'VT323', monospace;
+}
+
+.btn:hover {
+    color: yellow;
+}
+
+.btn:active {
+    color: lightyellow;
+}
+
+.project-icon {
+    display: inline-block;
+    margin: 10px;
+    color: orange;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.project-icon:hover {
+    color: yellow;
+}
+
+#fond {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+/* Animation du titre lorsqu'il est cliqué */
+@keyframes slideUpOnClick {
+    0% {
+        top: 50vh;
+    }
+    100% {
+        top: 120px;  /* Déplacement vers le haut */
+    }
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transform: rotate(0deg); /* Empêcher l'inversion individuelle */
+
+  }
+  
+  .project-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+  }
+  
+  .project-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.3s;
+    transform: rotate(0deg); /* Empêcher l'inversion individuelle */
+
+  }
+  
+  .project-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .project-description {
+    font-size: 18px;
+    color: white;
+    max-width: 400px;
+    text-align: left;
+    transform: rotate(0deg); /* S'assurer que le texte est bien à l'endroit */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .project-item:hover .project-description {
+    opacity: 1;
+  }
+  
+  .project-item:hover .project-icon {
+    transform: scale(1.1); /* Agrandissement de l'icône au survol */
+  }
+  
