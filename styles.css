@@ -190,4 +190,3 @@ body, h1, h2, h3, p, a {
   .project-item:hover .project-icon {
     transform: scale(1.1); /* Agrandissement de l'icône au survol */
   }
-  
