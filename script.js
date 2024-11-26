@@ -32,16 +32,20 @@ document.getElementById("act").addEventListener("click", () => {
   const projectHTML = `
     <div class="project-list">
       <div class="project-item">
-        <img src="img/vidaletfils.PNG" alt="Projet 1" class="project-icon" onclick="window.open('https://lienversprojet1.com')" />
-        <div class="project-description">VIDAL ET FILS : Il s'agit d'un site de location ayant pour but de tester nos compétences en HTML, CSS, JavaScript, et PHP.</div>
+        <img src="img/vidaletfils.PNG" alt="Projet 1" class="project-icon" onclick="window.open('https://github.com/MrGriPy/SCI-Vidal-et-Fils')" />
+        <div class="project-description">VIDAL ET FILS : Site de location ayant pour but de tester mes compétences en HTML, CSS, JavaScript, et PHP.</div>
       </div>
       <div class="project-item">
-        <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://lienversprojet2.com')" />
-        <div class="project-description">VIDEO GAME STATS : Il s'agit d'un site de statistiques qui démonte les clichés qui ont longtemps entouré le Jeu Vidéo.</div>
+        <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://mrgripy.github.io/Video-Game-Stats/')" />
+        <div class="project-description">VIDEO GAME STATS : Site de statistiques qui démonte les clichés qui ont longtemps entouré le Jeu Vidéo.</div>
       </div>
       <div class="project-item">
-        <img src="img/projet3.png" alt="Projet 3" class="project-icon" onclick="window.open('https://lienversprojet3.com')" />
-        <div class="project-description">Description du projet 3 : Ce projet porte sur l'optimisation des performances...</div>
+        <img src="img/APERO.png" alt="Projet 3" class="project-icon" onclick="window.open('https://www.youtube.com/watch?v=vl6RfXwczIs')" />
+        <div class="project-description">L'APERO : Mini-projet dans lequel nous devions faire un montage scénarisé à partir de divers mouvements de caméra. </div>
+      </div>
+      <div class="project-item">
+        <img src="img/APERO.png" alt="Projet 4" class="project-icon" onclick="window.open('https://mrgripy.github.io/portrait-chinois/')" />
+        <div class="project-description">PORTRAIT CHINOIS : Site qui me permet de me présenter sous un autre angle, pour but de tester mes compétences en HTML, CSS, et JavaScript.</div>
       </div>
     </div>
   `;
@@ -51,12 +55,66 @@ document.getElementById("act").addEventListener("click", () => {
 });
 
 
+const testimonials = [
+  {
+    name: "Sonia Patinote, Maîtresse de stage",
+    text: "Thomas a su s'adapter rapidement à notre environnement professionnel. Très ponctuel et très sérieux, il a su aider l'équipe et s'en faire apprécier."
+  },
+  {
+    name: "Marisa, Manager McDonald",
+    text: "Il essaye toujours de faire de son mieux en se montrant autonome et en se proposant pour toutes les tâches."
+  },
+  {
+    name: "Camarade de classe",
+    text: "Travailler avec Thomas sur des projets d'équipe est toujours agréable. Il est perfectionniste et apporte une vraie plus-value au travail collectif."
+  }
+];
+
+let currentTestimonialIndex = 0;
+
 document.getElementById("item").addEventListener("click", () => {
-  typeWriter(
-    "Témoignages : Voici ce que les autres disent de moi dans un cadre professionnel.",
-    "textBox"
-  );
+  displayTestimonial(currentTestimonialIndex);
 });
+
+function displayTestimonial(index) {
+  const { name, text } = testimonials[index];
+  const textBox = document.getElementById("textBox");
+  textBox.innerHTML = `
+    <div class="testimonial">
+      <div class="testimonial-name">${name} :</div>
+      <div id="testimonial-text" class="reversed-text">${text}</div> <br>
+      <div class="testimonial-nav">
+        <button id="prevBtn" ${index === 0 ? "disabled" : ""}>◀ Précédent</button>
+        <button id="nextBtn" ${index === testimonials.length - 1 ? "disabled" : ""}>Suivant ▶</button>
+      </div>
+    </div>
+  `;
+
+  // Gestion des boutons de navigation
+  document.getElementById("prevBtn")?.addEventListener("click", () => {
+    if (currentTestimonialIndex > 0) {
+      currentTestimonialIndex--;
+      displayTestimonial(currentTestimonialIndex);
+    }
+  });
+
+  document.getElementById("nextBtn")?.addEventListener("click", () => {
+    if (currentTestimonialIndex < testimonials.length - 1) {
+      currentTestimonialIndex++;
+      displayTestimonial(currentTestimonialIndex);
+    }
+  });
+}
+
+function correctReversedText(text, elementId) {
+  const element = document.getElementById(elementId);
+  element.innerHTML = ""; // Efface tout d'abord le contenu actuel
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i] === "\n" ? "<br>" : text[text.length - 1 - i]; // Corrige l'ordre du texte
+    element.innerHTML += char;
+  }
+}
+
 
 document.getElementById("mercy").addEventListener("click", () => {
   typeWriter(
@@ -131,11 +189,6 @@ document.getElementById("portfolioTitle").addEventListener("click", () => {
   const title = document.getElementById("portfolioTitle");
   title.style.animation = 'slideUpOnClick 1s forwards'; // Animation du titre vers le haut
   document.getElementById("contentInterface").style.display = 'block'; // Afficher le contenu
-});
-document.getElementById("portfolioTitle").addEventListener("click", () => {
-  const title = document.getElementById("portfolioTitle");
-  title.style.animation = 'slideUpOnClick 1s forwards'; // Animation du titre vers le haut
-  
   const contentInterface = document.getElementById("contentInterface");
   setTimeout(() => {
     contentInterface.style.display = 'block'; // Afficher le contenu
