@@ -23,7 +23,7 @@ body, h1, h2, h3, p, a {
 .title {
     position: absolute;
     bottom: -60px;
-    font-size: 30px;
+    font-size: 50px;
     color: orange;
     font-family: 'VT323', monospace;
     animation: slideUp 1s forwards;
@@ -73,7 +73,7 @@ body, h1, h2, h3, p, a {
     width: var(--text-box-width);
     max-height: 70vh;
     overflow-y: auto;
-    font-size: 22px;
+    font-size: 24px;
     color: white;
     text-align: left;
     scroll-behavior: smooth;
@@ -99,7 +99,7 @@ body, h1, h2, h3, p, a {
     border: 2px solid orange;
     color: orange;
     padding: 10px 20px;
-    font-size: 22px;
+    font-size: 24px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
     font-family: 'VT323', monospace;
@@ -107,17 +107,19 @@ body, h1, h2, h3, p, a {
 
 .btn:hover {
     color: yellow;
+    border: 2px solid yellow;
 }
 
 .btn:active {
     color: lightyellow;
+    border: 2px solid lightyellow;
 }
 
 .project-icon {
     display: inline-block;
     margin: 10px;
     color: orange;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     transition: color 0.3s;
 }
@@ -174,7 +176,7 @@ body, h1, h2, h3, p, a {
   }
   
   .project-description {
-    font-size: 18px;
+    font-size: 24px;
     color: white;
     max-width: 400px;
     text-align: left;
@@ -189,4 +191,45 @@ body, h1, h2, h3, p, a {
   
   .project-item:hover .project-icon {
     transform: scale(1.1); /* Agrandissement de l'icône au survol */
+  }
+
+  .testimonial {
+    text-align: left;
+    font-size: 24px;
+    line-height: 1.6;
+    margin: 20px 0;
+    transform: none;  /* Assurer qu'aucune transformation n'est appliquée */
+  }
+  
+  .testimonial-name {
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: orange;
+  }
+  
+  .testimonial-nav {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .testimonial-nav button {
+    background-color: transparent;
+    border: 2px solid orange;
+    color: orange;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 20px;
+
+  }
+  
+  .testimonial-nav button:hover {
+    background-color: orange;
+    color: black;
+  }
+  
+  .testimonial-nav button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
