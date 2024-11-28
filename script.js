@@ -4,9 +4,8 @@ function typeWriter(text, elementId) {
   let i = 0;
   const speed = 20;
   const element = document.getElementById(elementId);
-  element.innerHTML = "";
-
   if (timeoutId) clearTimeout(timeoutId);
+  element.innerHTML = "";
 
   function type() {
     if (i < text.length) {
@@ -17,7 +16,6 @@ function typeWriter(text, elementId) {
       scrollToTop(element);
     }
   }
-
   type();
 }
 
@@ -37,23 +35,27 @@ document.getElementById("act").addEventListener("click", () => {
       </div>
       <div class="project-item">
         <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://mrgripy.github.io/Video-Game-Stats/')" />
-        <div class="project-description">VIDEO GAME STATS : Site de statistiques qui démonte les clichés qui ont longtemps entouré le Jeu Vidéo.</div>
+        <div class="project-description">VIDEO GAME STATS : Site de statistiques qui démontre les clichés sur le Jeu Vidéo.</div>
       </div>
       <div class="project-item">
         <img src="img/APERO.png" alt="Projet 3" class="project-icon" onclick="window.open('https://www.youtube.com/watch?v=vl6RfXwczIs')" />
-        <div class="project-description">L'APERO : Mini-projet dans lequel nous devions faire un montage scénarisé à partir de divers mouvements de caméra. </div>
+        <div class="project-description">L'APERO : Mini-projet dans lequel nous devions faire un montage scénarisé à partir de divers mouvements de caméra.</div>
       </div>
       <div class="project-item">
-        <img src="img/APERO.png" alt="Projet 4" class="project-icon" onclick="window.open('https://mrgripy.github.io/portrait-chinois/')" />
+        <img src="img/portrait-chinois.png" alt="Projet 4" class="project-icon" onclick="window.open('https://mrgripy.github.io/portrait-chinois/')" />
         <div class="project-description">PORTRAIT CHINOIS : Site qui me permet de me présenter sous un autre angle, pour but de tester mes compétences en HTML, CSS, et JavaScript.</div>
+      </div>
+      <div class="project-item">
+        <img src="img/Mini-blog.png" alt="Projet 5" class="project-icon" onclick="window.open('https://github.com/MrGriPy/Mini-blog')" />
+        <div class="project-description">MINI-BLOG : Site minimaliste qui permet un système de session utilisateur fonctionnelle et d'administration complet de l'administrateur du blog.</div>
       </div>
     </div>
   `;
   const textBox = document.getElementById("textBox");
+  if (timeoutId) clearTimeout(timeoutId);
   textBox.innerHTML = projectHTML;
   scrollToTop(textBox);
 });
-
 
 const testimonials = [
   {
@@ -61,7 +63,7 @@ const testimonials = [
     text: "Thomas a su s'adapter rapidement à notre environnement professionnel. Très ponctuel et très sérieux, il a su aider l'équipe et s'en faire apprécier."
   },
   {
-    name: "Marisa, Manager McDonald",
+    name: "Marisa, Manager Mc Donald's",
     text: "Il essaye toujours de faire de son mieux en se montrant autonome et en se proposant pour toutes les tâches."
   },
   {
@@ -73,16 +75,19 @@ const testimonials = [
 let currentTestimonialIndex = 0;
 
 document.getElementById("item").addEventListener("click", () => {
+  if (timeoutId) clearTimeout(timeoutId);
+  scrollToTop(textBox);
   displayTestimonial(currentTestimonialIndex);
 });
 
 function displayTestimonial(index) {
   const { name, text } = testimonials[index];
   const textBox = document.getElementById("textBox");
+
   textBox.innerHTML = `
     <div class="testimonial">
       <div class="testimonial-name">${name} :</div>
-      <div id="testimonial-text" class="reversed-text">${text}</div> <br>
+      <div id="testimonial-text" class="reversed-text"></div> <br>
       <div class="testimonial-nav">
         <button id="prevBtn" ${index === 0 ? "disabled" : ""}>◀ Précédent</button>
         <button id="nextBtn" ${index === testimonials.length - 1 ? "disabled" : ""}>Suivant ▶</button>
@@ -90,7 +95,10 @@ function displayTestimonial(index) {
     </div>
   `;
 
-  // Gestion des boutons de navigation
+  const testimonialText = document.getElementById("testimonial-text");
+
+  typeWriterEffect(text, testimonialText);
+
   document.getElementById("prevBtn")?.addEventListener("click", () => {
     if (currentTestimonialIndex > 0) {
       currentTestimonialIndex--;
@@ -106,15 +114,18 @@ function displayTestimonial(index) {
   });
 }
 
-function correctReversedText(text, elementId) {
-  const element = document.getElementById(elementId);
-  element.innerHTML = ""; // Efface tout d'abord le contenu actuel
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i] === "\n" ? "<br>" : text[text.length - 1 - i]; // Corrige l'ordre du texte
-    element.innerHTML += char;
+function typeWriterEffect(text, element) {
+  let i = 0;
+  element.innerHTML = "";
+  function type() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      typingTimeoutId = setTimeout(type, 20);
+    }
   }
+  type();
 }
-
 
 document.getElementById("mercy").addEventListener("click", () => {
   typeWriter(
@@ -122,6 +133,28 @@ document.getElementById("mercy").addEventListener("click", () => {
     "textBox"
   );
 });
+
+function scrollToTop(element) {
+  element.scrollTop = element.scrollHeight;
+}
+
+window.onload = initAnim;
+
+document.getElementById("portfolioTitle").addEventListener("click", () => {
+  const title = document.getElementById("portfolioTitle");
+  title.style.animation = 'slideUpOnClick 1s forwards';
+  document.getElementById("contentInterface").style.display = 'block';
+  const contentInterface = document.getElementById("contentInterface");
+  setTimeout(() => {
+    contentInterface.style.display = 'block';
+    contentInterface.classList.add('show');
+  }, 100);
+});
+
+document.querySelector('.title').addEventListener('click', function() {
+  this.classList.add('clicked');
+});
+
 
 function scrollToTop(element) {
   element.scrollTop = element.scrollHeight;
@@ -138,7 +171,6 @@ function initAnim() {
   var context = canvas.getContext("2d");
   var dotCount = 200;
   var dots = [];
-
   for (var i = 0; i < dotCount; i++) {
     dots.push(new dot());
   }
@@ -184,14 +216,13 @@ function initAnim() {
 
 window.onload = initAnim;
 
-// Lorsque le titre est cliqué, afficher le contenu avec une animation
 document.getElementById("portfolioTitle").addEventListener("click", () => {
   const title = document.getElementById("portfolioTitle");
-  title.style.animation = 'slideUpOnClick 1s forwards'; // Animation du titre vers le haut
-  document.getElementById("contentInterface").style.display = 'block'; // Afficher le contenu
+  title.style.animation = 'slideUpOnClick 1s forwards';
+  document.getElementById("contentInterface").style.display = 'block';
   const contentInterface = document.getElementById("contentInterface");
   setTimeout(() => {
-    contentInterface.style.display = 'block'; // Afficher le contenu
-    contentInterface.classList.add('show'); // Ajouter l'animation d'apparition
-  }, 100); // Lancer l'animation après l'animation du titre (1s)
+    contentInterface.style.display = 'block';
+    contentInterface.classList.add('show');
+  }, 100);
 });
