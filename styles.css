@@ -21,30 +21,35 @@ body, h1, h2, h3, p, a {
 }
 
 .title {
-    position: absolute;
-    bottom: -60px;
-    font-size: 50px;
-    color: orange;
-    font-family: 'VT323', monospace;
-    animation: slideUp 1s forwards;
-    cursor: pointer;
-    transition: color 0.3s;
+  position: absolute;
+  bottom: -60px;
+  font-size: 50px;
+  color: orange;
+  font-family: 'VT323', monospace;
+  animation: slideUp 1s forwards;
+  cursor: pointer;
+  transition: color 0.3s;
+  pointer-events: auto;
+}
+
+.title.clicked {
+  pointer-events: none;
 }
 
 .title:hover {
-    color: yellow;
+  color: yellow;
 }
+
 
 @keyframes slideUp {
     0% {
         bottom: -60px;
     }
     100% {
-        bottom: 50vh;  /* Remontée au centre */
+        bottom: 50vh;
     }
 }
 
-/* Interface */
 .interface {
     position: relative;
     width: var(--text-box-width);
@@ -101,8 +106,8 @@ body, h1, h2, h3, p, a {
     padding: 10px 20px;
     font-size: 24px;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    font-family: 'VT323', monospace;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    font-family: 'VT323', monospace;  
 }
 
 .btn:hover {
@@ -137,13 +142,12 @@ body, h1, h2, h3, p, a {
     z-index: -1;
 }
 
-/* Animation du titre lorsqu'il est cliqué */
 @keyframes slideUpOnClick {
     0% {
         top: 50vh;
     }
     100% {
-        top: 120px;  /* Déplacement vers le haut */
+        top: 120px;
     }
 }
 
@@ -151,24 +155,30 @@ body, h1, h2, h3, p, a {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    transform: rotate(0deg); /* Empêcher l'inversion individuelle */
-
+    transform: rotate(0deg);
+  }
+  
+  .project-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
   }
   
   .project-item {
     display: flex;
     align-items: center;
-    gap: 20px;
+    justify-content: center;
+    gap: 10px;
     position: relative;
   }
   
   .project-icon {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
     transition: transform 0.3s;
-    transform: rotate(0deg); /* Empêcher l'inversion individuelle */
-
+    transform: rotate(0deg);
   }
   
   .project-icon:hover {
@@ -180,7 +190,7 @@ body, h1, h2, h3, p, a {
     color: white;
     max-width: 400px;
     text-align: left;
-    transform: rotate(0deg); /* S'assurer que le texte est bien à l'endroit */
+    transform: rotate(0deg);
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -190,7 +200,7 @@ body, h1, h2, h3, p, a {
   }
   
   .project-item:hover .project-icon {
-    transform: scale(1.1); /* Agrandissement de l'icône au survol */
+    transform: scale(1.1);
   }
 
   .testimonial {
@@ -198,7 +208,7 @@ body, h1, h2, h3, p, a {
     font-size: 24px;
     line-height: 1.6;
     margin: 20px 0;
-    transform: none;  /* Assurer qu'aucune transformation n'est appliquée */
+    transform: none;
   }
   
   .testimonial-name {
