@@ -1,30 +1,53 @@
 let timeoutId;
+let lastSoundTime = 0; // Garde en mémoire le temps du dernier son
 
 function typeWriter(text, elementId) {
   let i = 0;
-  const speed = 20;
+  const speed = 25; // Vitesse de défilement des lettres
+  const soundInterval = 50; // Temps minimum entre deux sons (en ms)
   const element = document.getElementById(elementId);
+  const audio = new Audio("blip.wav");
+  
   if (timeoutId) clearTimeout(timeoutId);
   element.innerHTML = "";
 
   function type() {
     if (i < text.length) {
+      const now = Date.now();
+
+      // Ajout de la lettre (saut de ligne traité séparément)
       element.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+
+      // Jouer le son uniquement si c'est une lettre et si le délai est respecté
+      if (/[a-zA-Z0-9]/.test(text[i]) && now - lastSoundTime > soundInterval) {
+        audio.currentTime = 0; // Rejoue le son depuis le début
+        audio.play();
+        lastSoundTime = now;
+      }
+
       i++;
       timeoutId = setTimeout(type, speed);
     } else {
-      scrollToTop(element);
+      scrollToTop(element); // Fonction existante pour le scroll
     }
   }
+
   type();
 }
-
+// Exemple d'appel de la fonction sur le clic du bouton "fight"
 document.getElementById("fight").addEventListener("click", () => {
   typeWriter(
-    "Bonjour, je m'appelle Thomas Vidal.\n\nJe suis passionné par le jeu vidéo depuis toujours, notamment par le game design, son histoire et son impact sur notre société. Mon objectif à long terme est de travailler dans ce domaine pour créer des expériences immersives et uniques.\n\nGrâce à mon parcours en STI2D qui a été une étape clé après avoir surmonté une erreur de filière, j'ai su rattraper mon erreur en obtenant mon bac STI2D avec mention bien et intégrant le BUT MMI de Gustave Eiffel à Champs-sur-Marne. Ce parcours témoigne de ma détermination et de ma résilience, des qualités que je considère essentielles pour la réussite de mon parcours.\n\nJ'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et After Effects. Mon portfolio en ligne et mon CV présent sur LinkedIn montrent un aperçu de mes capacités. Je communiquerai régulièrement mes travaux via Instagram, Twitter (ou X) et YouTube. Travailler dans le game design me permettrait de contribuer à l'industrie en captivant les joueurs de la même manière que les jeux ont su me captiver.",
+    `Bonjour, je m'appelle Thomas Vidal.
+
+Je suis passionné par le jeu vidéo depuis toujours, notamment par le game design, son histoire et son impact sur notre société. Mon objectif à long terme est de travailler dans ce domaine pour créer des expériences immersives et uniques.
+
+Grâce à mon parcours en STI2D qui a été une étape clé après avoir surmonté une erreur de filière, j'ai réussi à intégrer le BUT MMI de Gustave Eiffel à Champs-sur-Marne. Ce parcours témoigne de ma détermination et de ma résilience, des qualités que je considère essentielles pour la réussite de mon parcours.
+
+J'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et After Effects. Travailler dans le game design me permettrait de contribuer à l'industrie en captivant les joueurs de la même manière que les jeux ont su me captiver.`,
     "textBox"
   );
 });
+
 
 document.getElementById("act").addEventListener("click", () => {
   const projectHTML = `
@@ -114,16 +137,34 @@ function displayTestimonial(index) {
   });
 }
 
+const audio = new Audio("blip.wav"); // Charger le son blip
+
 function typeWriterEffect(text, element) {
   let i = 0;
+  const speed = 25; // Vitesse d'apparition des lettres
+  const soundInterval = 50; // Temps minimum entre deux sons (en ms)
+  
   element.innerHTML = "";
+
   function type() {
     if (i < text.length) {
+      const now = Date.now();
+
+      // Ajout de la lettre dans l'élément
       element.innerHTML += text.charAt(i);
+
+      // Jouer le son uniquement si c'est une lettre et si le délai est respecté
+      if (/[a-zA-Z0-9]/.test(text.charAt(i)) && now - lastSoundTime > soundInterval) {
+        audio.currentTime = 0; // Rejoue le son depuis le début
+        audio.play();
+        lastSoundTime = now;
+      }
+
       i++;
-      typingTimeoutId = setTimeout(type, 20);
+      setTimeout(type, speed); // Rappel pour la prochaine lettre
     }
   }
+
   type();
 }
 
