@@ -1,5 +1,5 @@
 let timeoutId;
-let lastSoundTime = 0; // Garde en mémoire le temps du dernier son
+let lastSoundTime = 0;
 
 function typeWriter(text, elementId) {
   let i = 0;
@@ -7,19 +7,29 @@ function typeWriter(text, elementId) {
   const soundInterval = 50; // Temps minimum entre deux sons (en ms)
   const element = document.getElementById(elementId);
   const audio = new Audio("blip.wav");
-  
+
   if (timeoutId) clearTimeout(timeoutId);
-  element.innerHTML = "";
+  element.innerHTML = ""; // Réinitialisation du contenu avant d'écrire
 
   function type() {
     if (i < text.length) {
       const now = Date.now();
+      const currentChar = text[i];
 
-      // Ajout de la lettre (saut de ligne traité séparément)
-      element.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+      // Si c'est un lien, ajoute-le à l'élément différemment
+      if (currentChar === "<" && text.substring(i, i + 4) === "<a ") {
+        const linkStart = i;
+        const linkEnd = text.indexOf("</a>", i) + 4;
+        const linkText = text.substring(linkStart, linkEnd);
+        element.innerHTML += linkText;  // Ajout du lien complet
+        i = linkEnd;  // Sauter l'index de la fin du lien
+      } else {
+        // Ajout de la lettre (saut de ligne traité séparément)
+        element.innerHTML += currentChar === "\n" ? "<br>" : currentChar;
+      }
 
       // Jouer le son uniquement si c'est une lettre et si le délai est respecté
-      if (/[a-zA-Z0-9]/.test(text[i]) && now - lastSoundTime > soundInterval) {
+      if (/[a-zA-Z0-9]/.test(currentChar) && now - lastSoundTime > soundInterval) {
         audio.currentTime = 0; // Rejoue le son depuis le début
         audio.play();
         lastSoundTime = now;
@@ -34,6 +44,19 @@ function typeWriter(text, elementId) {
 
   type();
 }
+
+document.getElementById("contact").addEventListener("click", () => {
+  typeWriter(
+    `En cas de besoin, n'hésitez pas à me contacter via les coordonnées ci-dessous :
+
+    Téléphone : +33 6 17 08 18 16
+    E-mail : <a href="mailto:thomas.vidal0494@gmail.com">thomas.vidal0494@gmail.com</a><br>
+    LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/">Thomas Vidal</a>`,
+    "textBox"
+  );
+});
+
+
 // Exemple d'appel de la fonction sur le clic du bouton "fight"
 document.getElementById("fight").addEventListener("click", () => {
   typeWriter(
@@ -57,7 +80,7 @@ document.getElementById("act").addEventListener("click", () => {
         <div class="project-description">VIDAL ET FILS : Site de location ayant pour but de tester mes compétences en HTML, CSS, JavaScript, et PHP.</div>
       </div>
       <div class="project-item">
-        <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://mrgripy.github.io/Video-Game-Stats/')" />
+        <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://mrgripy.github.io/VGS/')" />
         <div class="project-description">VIDEO GAME STATS : Site de statistiques qui démontre les clichés sur le Jeu Vidéo.</div>
       </div>
       <div class="project-item">
@@ -120,7 +143,8 @@ function displayTestimonial(index) {
 
   const testimonialText = document.getElementById("testimonial-text");
 
-  typeWriterEffect(text, testimonialText);
+  // Appliquer l'effet typewriter sur le texte du témoignage
+  typeWriter(text, "testimonial-text");
 
   document.getElementById("prevBtn")?.addEventListener("click", () => {
     if (currentTestimonialIndex > 0) {
@@ -134,39 +158,9 @@ function displayTestimonial(index) {
       currentTestimonialIndex++;
       displayTestimonial(currentTestimonialIndex);
     }
-  });
-}
+  });}
 
-const audio = new Audio("blip.wav"); // Charger le son blip
 
-function typeWriterEffect(text, element) {
-  let i = 0;
-  const speed = 25; // Vitesse d'apparition des lettres
-  const soundInterval = 50; // Temps minimum entre deux sons (en ms)
-  
-  element.innerHTML = "";
-
-  function type() {
-    if (i < text.length) {
-      const now = Date.now();
-
-      // Ajout de la lettre dans l'élément
-      element.innerHTML += text.charAt(i);
-
-      // Jouer le son uniquement si c'est une lettre et si le délai est respecté
-      if (/[a-zA-Z0-9]/.test(text.charAt(i)) && now - lastSoundTime > soundInterval) {
-        audio.currentTime = 0; // Rejoue le son depuis le début
-        audio.play();
-        lastSoundTime = now;
-      }
-
-      i++;
-      setTimeout(type, speed); // Rappel pour la prochaine lettre
-    }
-  }
-
-  type();
-}
 
 document.getElementById("mercy").addEventListener("click", () => {
   typeWriter(
@@ -174,6 +168,7 @@ document.getElementById("mercy").addEventListener("click", () => {
     "textBox"
   );
 });
+
 
 function scrollToTop(element) {
   element.scrollTop = element.scrollHeight;
@@ -266,4 +261,65 @@ document.getElementById("portfolioTitle").addEventListener("click", () => {
     contentInterface.style.display = 'block';
     contentInterface.classList.add('show');
   }, 100);
+});
+
+// Initialisation des variables
+const audio = new Audio("background.mp3");  // Charger la musique de fond
+const speakerImage = document.createElement("img");  // Créer l'élément image
+let isPlaying = false; // La musique est désactivée au départ
+
+// Paramètres pour l'image du haut-parleur
+speakerImage.src = "img/speaker.png";  // Image par défaut
+speakerImage.style.position = "fixed";
+speakerImage.style.bottom = "20px";
+speakerImage.style.right = "20px";
+speakerImage.style.width = "50px";
+speakerImage.style.height = "50px";
+speakerImage.style.transition = "transform 0.2s";  // Transition pour l'agrandissement
+speakerImage.style.cursor = "not-allowed"; // Le curseur initial empêche le clic
+speakerImage.style.opacity = "0.5"; // Image initialement désactivée
+
+// Ajouter l'image dans le body
+document.body.appendChild(speakerImage);
+
+// Fonction pour activer/désactiver la musique
+function toggleMusic() {
+  if (isPlaying) {
+    audio.pause();  // Mettre la musique en pause
+    speakerImage.src = "img/nospeaker.png";  // Changer l'image en "nospeaker.png"
+  } else {
+    audio.play();  // Démarrer ou reprendre la musique
+    speakerImage.src = "img/speaker.png";  // Revenir à l'image "speaker.png"
+  }
+  isPlaying = !isPlaying;  // Inverser l'état (joué/pausé)
+}
+
+// Ajout d'un écouteur pour activer/désactiver la musique
+speakerImage.addEventListener("click", () => {
+  if (isPlaying || audio.currentTime > 0) {
+    toggleMusic();
+  }
+});
+
+// Activer l'image au survol uniquement après le démarrage de la musique
+speakerImage.addEventListener("mouseenter", () => {
+  if (isPlaying || audio.currentTime > 0) {
+    speakerImage.style.cursor = "pointer";  // Changer le curseur au survol
+    speakerImage.style.transform = "scale(1.1)";  // Agrandir l'image légèrement
+  }
+});
+
+speakerImage.addEventListener("mouseleave", () => {
+  speakerImage.style.transform = "scale(1)";  // Revenir à la taille initiale
+});
+
+// Activation de la musique au clic sur le titre
+const title = document.getElementById("portfolioTitle"); // Remplacer par l'ID de votre titre
+title.addEventListener("click", () => {
+  if (!isPlaying) {
+    audio.play();  // Démarrer la musique
+    isPlaying = true;
+    speakerImage.style.cursor = "pointer"; // Activer le clic sur le haut-parleur
+    speakerImage.style.opacity = "1"; // Rendre l'image pleinement visible
+  }
 });
