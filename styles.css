@@ -1,245 +1,253 @@
 :root {
-    --text-box-width: 1000px;
-    --text-box-height: auto;
+  --text-box-width: 1000px;
+  --text-box-height: auto;
 }
 
 body {
-    background-color: black;
-    color: white;
-    font-family: 'Press Start 2P', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
+  background-color: black;
+  color: white;
+  font-family: 'Press Start 2P', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
 }
 
 body, h1, h2, h3, p, a {
-    font-family: 'VT323', monospace;
-    color: white;
+  font-family: 'VT323', monospace;
+  color: white;
 }
 
 .title {
-  position: absolute;
-  bottom: -60px;
-  font-size: 50px;
-  color: orange;
-  font-family: 'VT323', monospace;
-  animation: slideUp 1s forwards;
-  cursor: pointer;
-  transition: color 0.3s;
-  pointer-events: auto;
+position: absolute;
+bottom: -60px;
+font-size: 50px;
+color: orange;
+font-family: 'VT323', monospace;
+animation: slideUp 1s forwards;
+cursor: pointer;
+transition: color 0.3s;
+pointer-events: auto;
 }
 
 .title.clicked {
-  pointer-events: none;
+pointer-events: none;
 }
 
 .title:hover {
-  color: yellow;
+color: yellow;
 }
 
 
 @keyframes slideUp {
-    0% {
-        bottom: -60px;
-    }
-    100% {
-        bottom: 50vh;
-    }
+  0% {
+      bottom: -60px;
+  }
+  100% {
+      bottom: 50vh;
+  }
 }
 
 .interface {
-    position: relative;
-    width: var(--text-box-width);
-    height: 90vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  position: relative;
+  width: var(--text-box-width);
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .interface.show {
-    opacity: 1;
-    transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
 .text-box {
-    position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 3px solid white;
-    padding: 20px;
-    width: var(--text-box-width);
-    max-height: 70vh;
-    overflow-y: auto;
-    font-size: 24px;
-    color: white;
-    text-align: left;
-    scroll-behavior: smooth;
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-.text-box > * {
-    transform: scaleY(-1);
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px solid white;
+  padding: 20px;
+  width: var(--text-box-width);
+  max-height: 70vh;
+  overflow-y: auto;
+  font-size: 24px;
+  color: white;
+  text-align: left;
+  scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .button-container {
-    position: absolute;
-    bottom: 20px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    width: 100%;
+  position: absolute;
+  bottom: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
 }
 
 .btn {
-    background-color: transparent;
-    border: 2px solid orange;
-    color: orange;
-    padding: 10px 20px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-    font-family: 'VT323', monospace;  
+  background-color: transparent;
+  border: 2px solid orange;
+  color: orange;
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  font-family: 'VT323', monospace;  
 }
 
 .btn:hover {
-    color: yellow;
-    border: 2px solid yellow;
+  color: yellow;
+  border: 2px solid yellow;
 }
 
 .btn:active {
-    color: lightyellow;
-    border: 2px solid lightyellow;
+  color: lightyellow;
+  border: 2px solid lightyellow;
 }
 
 .project-icon {
-    display: inline-block;
-    margin: 10px;
-    color: orange;
-    font-size: 20px;
-    cursor: pointer;
-    transition: color 0.3s;
+  display: inline-block;
+  margin: 10px;
+  color: orange;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s;
 }
 
 .project-icon:hover {
-    color: yellow;
+  color: yellow;
 }
 
 #fond {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 
 @keyframes slideUpOnClick {
-    0% {
-        top: 50vh;
-    }
-    100% {
-        top: 120px;
-    }
+  0% {
+      top: 50vh;
+  }
+  100% {
+      top: 120px;
+  }
 }
 
 .project-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    transform: rotate(0deg);
-  }
-  
-  .project-list {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    justify-items: center;
-  }
-  
-  .project-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    position: relative;
-  }
-  
-  .project-icon {
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    transition: transform 0.3s;
-    transform: rotate(0deg);
-  }
-  
-  .project-icon:hover {
-    transform: scale(1.1);
-  }
-  
-  .project-description {
-    font-size: 24px;
-    color: white;
-    max-width: 400px;
-    text-align: left;
-    transform: rotate(0deg);
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .project-item:hover .project-description {
-    opacity: 1;
-  }
-  
-  .project-item:hover .project-icon {
-    transform: scale(1.1);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transform: rotate(0deg);
+}
 
-  .testimonial {
-    text-align: left;
-    font-size: 24px;
-    line-height: 1.6;
-    margin: 20px 0;
-    transform: none;
-  }
-  
-  .testimonial-name {
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: orange;
-  }
-  
-  .testimonial-nav {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .testimonial-nav button {
-    background-color: transparent;
-    border: 2px solid orange;
-    color: orange;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-family: 'VT323', monospace;
-    transition: background-color 0.3s, color 0.3s;
-    font-size: 20px;
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-items: center;
+}
 
-  }
-  
-  .testimonial-nav button:hover {
-    background-color: orange;
-    color: black;
-  }
-  
-  .testimonial-nav button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+.project-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.project-icon {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  transition: transform 0.3s;
+  transform: rotate(0deg);
+}
+
+.project-icon:hover {
+  transform: scale(1.1);
+}
+
+.project-description {
+  font-size: 24px;
+  color: white;
+  max-width: 400px;
+  text-align: left;
+  transform: rotate(0deg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.project-item:hover .project-description {
+  opacity: 1;
+}
+
+.project-item:hover .project-icon {
+  transform: scale(1.1);
+}
+
+.testimonial {
+  text-align: left;
+  font-size: 24px;
+  line-height: 1.6;
+  margin: 20px 0;
+  transform: none;
+}
+
+.testimonial-name {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: orange;
+}
+
+.testimonial-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+.testimonial-nav button {
+  background-color: transparent;
+  border: 2px solid orange;
+  color: orange;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: 'VT323', monospace;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 20px;
+
+}
+
+.testimonial-nav button:hover {
+  background-color: orange;
+  color: black;
+}
+
+.testimonial-nav button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Appliquer le retournement uniquement sur certains éléments (si nécessaire) */
+.reversed-text {
+  transform: rotateY(180deg);
+  direction: rtl; /* Pour forcer l'affichage en ordre inversé */
+}
+
+/* Empêcher le retournement sur les liens ou autres parties importantes */
+.reversed-text a {
+  transform: none; /* Annule l'inversion pour les liens */
+  direction: ltr; /* Assure que le texte des liens s'affiche normalement */
+}
