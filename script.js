@@ -323,7 +323,9 @@ document.getElementById("contact").addEventListener("click", () => {
   typeWriter(
     `En cas de besoin, n'hésitez pas à me contacter via les coordonnées ci-dessous :
 
-Téléphone : +33 6 17 08 18 16
+Téléphone :
++33 6 17 08 18 16
+
 E-mail : <a href="mailto:thomas.vidal0494@gmail.com" style="color:yellow; target="_blank">thomas.vidal0494@gmail.com</a>
 LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/" style="color:yellow; target="_blank">Thomas Vidal</a>`,
     "textBox"
