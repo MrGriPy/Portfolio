@@ -120,7 +120,7 @@ const testimonials = [
     text: "Il essaye toujours de faire de son mieux en se montrant autonome et en se proposant pour toutes les tâches."
   },
   {
-    name: "Camarade de classe",
+    name: "Anthony, Camarade",
     text: "Travailler avec Thomas sur des projets d'équipe est toujours agréable. Il est perfectionniste et apporte une vraie plus-value au travail collectif."
   }
 ];
