@@ -50,7 +50,7 @@ function typeWriter(text, elementId) {
         element.innerHTML += currentChar;
 
         if (/[a-zA-Z0-9]/.test(currentChar) && now - lastSoundTime > soundInterval) {
-          audio.currentTime = 0;
+          audio.currentTime = 0; // Rejoue le son depuis le début
           audio.play();
           lastSoundTime = now;
         }
