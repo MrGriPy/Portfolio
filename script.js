@@ -267,7 +267,7 @@ document.getElementById("portfolioTitle").addEventListener("click", () => {
   }, 100);
 });
 
-const audio = new Audio("background.mp3");
+const audio = new Audio("background.wav");
 const speakerImage = document.createElement("img");
 let isPlaying = false;
 
