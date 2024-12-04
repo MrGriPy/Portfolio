@@ -40,6 +40,7 @@ body, h1, h2, h3, p, a {
   color: yellow;
 }
 
+
 @keyframes slideUp {
     0% {
         bottom: -60px;
@@ -65,6 +66,7 @@ body, h1, h2, h3, p, a {
     opacity: 1;
     transform: translateY(0);
 }
+
 
 .text-box {
     position: absolute;
@@ -229,6 +231,7 @@ body, h1, h2, h3, p, a {
     font-family: 'VT323', monospace;
     transition: background-color 0.3s, color 0.3s;
     font-size: 20px;
+
   }
   
   .testimonial-nav button:hover {
@@ -240,3 +243,106 @@ body, h1, h2, h3, p, a {
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  @media (max-width: 768px) {
+    :root {
+        --text-box-width: 90%; /* Réduction adaptée pour éviter les débordements */
+    }
+
+    body {
+        font-size: 14px; /* Taille réduite pour une meilleure lisibilité */
+        overflow: auto; /* Activation du défilement si nécessaire */
+    }
+
+    .title {
+        font-size: 28px;
+        bottom: 15%; /* Placement légèrement au-dessus pour libérer de l’espace */
+    }
+
+    .interface {
+        height: 80vh;
+    }
+
+    .text-box {
+        width: 90%; 
+        padding: 10px;
+        font-size: 18px;
+        max-height: 50vh; /* Ajustement pour éviter tout chevauchement */
+        bottom: 15%; /* Repositionnement au-dessus des boutons */
+    }
+
+    .button-container {
+        position: absolute;
+        bottom: 5%; /* Boutons plus proches du bas de l’écran */
+        flex-direction: row; /* Toujours alignés horizontalement */
+        gap: 10px; /* Espacement réduit */
+    }
+
+    .btn {
+        padding: 6px 10px; /* Taille des boutons réduite */
+        font-size: 16px; /* Texte plus petit */
+        width: auto; /* Suppression des tailles fixes */
+        height: auto;
+    }
+
+    .project-list {
+        grid-template-columns: repeat(2, 1fr); /* Réduction à 2 colonnes */
+        gap: 10px;
+    }
+
+    .project-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .project-description {
+        font-size: 16px;
+    }
+
+    .testimonial {
+        font-size: 18px;
+        margin: 10px 0;
+    }
+
+    .testimonial-nav {
+        flex-direction: row; /* Alignement horizontal des boutons */
+        gap: 10px;
+    }
+
+    .testimonial-nav button {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 22px;
+        bottom: 10%;
+    }
+
+    .text-box {
+        padding: 8px;
+        font-size: 16px;
+        max-height: 45vh; /* Encore plus bas pour éviter le chevauchement */
+        bottom: 20%; /* Placement au-dessus des boutons */
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 5px 8px;
+    }
+
+    .button-container {
+        bottom: 5%; /* Ajustement pour rester visible sans chevaucher */
+    }
+
+    .project-list {
+        grid-template-columns: 1fr; /* Une seule colonne pour les très petits écrans */
+        gap: 8px;
+    }
+
+    .project-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
