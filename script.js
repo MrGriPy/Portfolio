@@ -50,7 +50,7 @@ function typeWriter(text, elementId) {
         element.innerHTML += currentChar;
 
         if (/[a-zA-Z0-9]/.test(currentChar) && now - lastSoundTime > soundInterval) {
-          audio.currentTime = 0; // Rejoue le son depuis le début
+          audio.currentTime = 0;
           audio.play();
           lastSoundTime = now;
         }
@@ -74,7 +74,6 @@ J'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et Af
     "textBox"
   );
 });
-
 
 document.getElementById("projets").addEventListener("click", () => {
   const projectHTML = `
