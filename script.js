@@ -1,64 +1,68 @@
+const clickSound = new Audio("clic.wav");
+const buttons = document.querySelectorAll(".btn");
+buttons.forEach(button => {
+  button.addEventListener("click", () => {
+    clickSound.currentTime = 0;
+    clickSound.play();
+  });
+});
+
+const typewriterSound = new Audio("blip.wav");
+
+function stopOtherSounds() {
+  const allSounds = [typewriterSound];
+  allSounds.forEach(sound => {
+    sound.pause();
+    sound.currentTime = 0;
+  });
+}
+
 let timeoutId;
 let lastSoundTime = 0;
 
 function typeWriter(text, elementId) {
   let i = 0;
-  const speed = 25; // Vitesse de défilement des lettres
-  const soundInterval = 50; // Temps minimum entre deux sons (en ms)
+  const speed = 25;
+  const soundInterval = 50;
   const element = document.getElementById(elementId);
   const audio = new Audio("blip.wav");
 
   if (timeoutId) clearTimeout(timeoutId);
-  element.innerHTML = ""; // Réinitialisation du contenu avant d'écrire
+  element.innerHTML = "";
 
   function type() {
     if (i < text.length) {
       const now = Date.now();
-      const currentChar = text[i];
 
-      // Si c'est un lien, ajoute-le à l'élément différemment
-      if (currentChar === "<" && text.substring(i, i + 4) === "<a ") {
-        const linkStart = i;
+      if (text.substring(i, i + 3) === "<a ") {
         const linkEnd = text.indexOf("</a>", i) + 4;
-        const linkText = text.substring(linkStart, linkEnd);
-        element.innerHTML += linkText;  // Ajout du lien complet
-        i = linkEnd;  // Sauter l'index de la fin du lien
+        const linkHTML = text.substring(i, linkEnd);
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = linkHTML;
+        const linkElement = tempDiv.firstChild;
+        element.appendChild(linkElement);
+        i = linkEnd;
+      } else if (text[i] === "\n") {
+        element.innerHTML += "<br>";
+        i++;
       } else {
-        // Ajout de la lettre (saut de ligne traité séparément)
-        element.innerHTML += currentChar === "\n" ? "<br>" : currentChar;
-      }
+        const currentChar = text[i];
+        element.innerHTML += currentChar;
 
-      // Jouer le son uniquement si c'est une lettre et si le délai est respecté
-      if (/[a-zA-Z0-9]/.test(currentChar) && now - lastSoundTime > soundInterval) {
-        audio.currentTime = 0; // Rejoue le son depuis le début
-        audio.play();
-        lastSoundTime = now;
+        if (/[a-zA-Z0-9]/.test(currentChar) && now - lastSoundTime > soundInterval) {
+          audio.currentTime = 0;
+          audio.play();
+          lastSoundTime = now;
+        }
+        i++;
       }
-
-      i++;
       timeoutId = setTimeout(type, speed);
-    } else {
-      scrollToTop(element); // Fonction existante pour le scroll
     }
   }
-
   type();
 }
 
-document.getElementById("contact").addEventListener("click", () => {
-  typeWriter(
-    `En cas de besoin, n'hésitez pas à me contacter via les coordonnées ci-dessous :
-
-    Téléphone : +33 6 17 08 18 16
-    E-mail : <a href="mailto:thomas.vidal0494@gmail.com">thomas.vidal0494@gmail.com</a><br>
-    LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/">Thomas Vidal</a>`,
-    "textBox"
-  );
-});
-
-
-// Exemple d'appel de la fonction sur le clic du bouton "fight"
-document.getElementById("fight").addEventListener("click", () => {
+document.getElementById("bio").addEventListener("click", () => {
   typeWriter(
     `Bonjour, je m'appelle Thomas Vidal.
 
@@ -72,7 +76,7 @@ J'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et Af
 });
 
 
-document.getElementById("act").addEventListener("click", () => {
+document.getElementById("projets").addEventListener("click", () => {
   const projectHTML = `
     <div class="project-list">
       <div class="project-item">
@@ -92,8 +96,12 @@ document.getElementById("act").addEventListener("click", () => {
         <div class="project-description">PORTRAIT CHINOIS : Site qui me permet de me présenter sous un autre angle, pour but de tester mes compétences en HTML, CSS, et JavaScript.</div>
       </div>
       <div class="project-item">
-        <img src="img/Mini-blog.png" alt="Projet 5" class="project-icon" onclick="window.open('https://github.com/MrGriPy/Mini-blog')" />
+        <img src="img/blog.png" alt="Projet 5" class="project-icon" onclick="window.open('https://github.com/MrGriPy/Mini-blog')" />
         <div class="project-description">MINI-BLOG : Site minimaliste qui permet un système de session utilisateur fonctionnelle et d'administration complet de l'administrateur du blog.</div>
+      </div>
+      <div class="project-item">
+        <img src="img/dreamwar.png" alt="Projet 6" class="project-icon" onclick="window.open('https://sites.google.com/view/thomasvidal/')" />
+        <div class="project-description">PROJECT DREAMWAR : Petit projet perso sur l'idéation d'un univers de jeu.</div>
       </div>
     </div>
   `;
@@ -105,11 +113,11 @@ document.getElementById("act").addEventListener("click", () => {
 
 const testimonials = [
   {
-    name: "Sonia Patinote, Maîtresse de stage",
+    name: "Sonia, Maîtresse de stage",
     text: "Thomas a su s'adapter rapidement à notre environnement professionnel. Très ponctuel et très sérieux, il a su aider l'équipe et s'en faire apprécier."
   },
   {
-    name: "Marisa, Manager Mc Donald's",
+    name: "Marima, Manager Mc Donald's",
     text: "Il essaye toujours de faire de son mieux en se montrant autonome et en se proposant pour toutes les tâches."
   },
   {
@@ -120,7 +128,7 @@ const testimonials = [
 
 let currentTestimonialIndex = 0;
 
-document.getElementById("item").addEventListener("click", () => {
+document.getElementById("temoignages").addEventListener("click", () => {
   if (timeoutId) clearTimeout(timeoutId);
   scrollToTop(textBox);
   displayTestimonial(currentTestimonialIndex);
@@ -142,12 +150,11 @@ function displayTestimonial(index) {
   `;
 
   const testimonialText = document.getElementById("testimonial-text");
-
-  // Appliquer l'effet typewriter sur le texte du témoignage
   typeWriter(text, "testimonial-text");
 
   document.getElementById("prevBtn")?.addEventListener("click", () => {
     if (currentTestimonialIndex > 0) {
+      clickSound.play();
       currentTestimonialIndex--;
       displayTestimonial(currentTestimonialIndex);
     }
@@ -155,20 +162,18 @@ function displayTestimonial(index) {
 
   document.getElementById("nextBtn")?.addEventListener("click", () => {
     if (currentTestimonialIndex < testimonials.length - 1) {
+      clickSound.play();
       currentTestimonialIndex++;
       displayTestimonial(currentTestimonialIndex);
     }
-  });}
+});}
 
-
-
-document.getElementById("mercy").addEventListener("click", () => {
+document.getElementById("opquast").addEventListener("click", () => {
   typeWriter(
     "En avril 2025, je passerai la certification Opquast, qui atteste des bonnes pratiques en matière de qualité web. L'accessibilité, la performance, et la qualité du contenu sur le web sont des aspects essentiels pour garantir une expérience utilisateur optimale. Elle complétera ainsi mon parcours et mes projets en ligne, en assurant que mes créations respectent les normes du développement web.",
     "textBox"
   );
 });
-
 
 function scrollToTop(element) {
   element.scrollTop = element.scrollHeight;
@@ -190,7 +195,6 @@ document.getElementById("portfolioTitle").addEventListener("click", () => {
 document.querySelector('.title').addEventListener('click', function() {
   this.classList.add('clicked');
 });
-
 
 function scrollToTop(element) {
   element.scrollTop = element.scrollHeight;
@@ -263,63 +267,66 @@ document.getElementById("portfolioTitle").addEventListener("click", () => {
   }, 100);
 });
 
-// Initialisation des variables
-const audio = new Audio("background.mp3");  // Charger la musique de fond
-const speakerImage = document.createElement("img");  // Créer l'élément image
-let isPlaying = false; // La musique est désactivée au départ
+const audio = new Audio("background.mp3");
+const speakerImage = document.createElement("img");
+let isPlaying = false;
 
-// Paramètres pour l'image du haut-parleur
-speakerImage.src = "img/speaker.png";  // Image par défaut
+speakerImage.src = "img/speaker.png";
 speakerImage.style.position = "fixed";
 speakerImage.style.bottom = "20px";
 speakerImage.style.right = "20px";
 speakerImage.style.width = "50px";
 speakerImage.style.height = "50px";
-speakerImage.style.transition = "transform 0.2s";  // Transition pour l'agrandissement
-speakerImage.style.cursor = "not-allowed"; // Le curseur initial empêche le clic
-speakerImage.style.opacity = "0.5"; // Image initialement désactivée
-
-// Ajouter l'image dans le body
+speakerImage.style.transition = "transform 0.2s";
+speakerImage.style.cursor = "not-allowed";
+speakerImage.style.opacity = "0.5";
 document.body.appendChild(speakerImage);
 
-// Fonction pour activer/désactiver la musique
 function toggleMusic() {
   if (isPlaying) {
-    audio.pause();  // Mettre la musique en pause
-    speakerImage.src = "img/nospeaker.png";  // Changer l'image en "nospeaker.png"
+    audio.pause();
+    speakerImage.src = "img/nospeaker.png";
   } else {
-    audio.play();  // Démarrer ou reprendre la musique
-    speakerImage.src = "img/speaker.png";  // Revenir à l'image "speaker.png"
+    audio.play();
+    speakerImage.src = "img/speaker.png";
   }
-  isPlaying = !isPlaying;  // Inverser l'état (joué/pausé)
+  isPlaying = !isPlaying;
 }
 
-// Ajout d'un écouteur pour activer/désactiver la musique
 speakerImage.addEventListener("click", () => {
   if (isPlaying || audio.currentTime > 0) {
     toggleMusic();
   }
 });
 
-// Activer l'image au survol uniquement après le démarrage de la musique
 speakerImage.addEventListener("mouseenter", () => {
   if (isPlaying || audio.currentTime > 0) {
-    speakerImage.style.cursor = "pointer";  // Changer le curseur au survol
-    speakerImage.style.transform = "scale(1.1)";  // Agrandir l'image légèrement
+    speakerImage.style.cursor = "pointer";
+    speakerImage.style.transform = "scale(1.1)";
   }
 });
 
 speakerImage.addEventListener("mouseleave", () => {
-  speakerImage.style.transform = "scale(1)";  // Revenir à la taille initiale
+  speakerImage.style.transform = "scale(1)";
 });
 
-// Activation de la musique au clic sur le titre
-const title = document.getElementById("portfolioTitle"); // Remplacer par l'ID de votre titre
+const title = document.getElementById("portfolioTitle");
 title.addEventListener("click", () => {
   if (!isPlaying) {
-    audio.play();  // Démarrer la musique
+    audio.play();
     isPlaying = true;
-    speakerImage.style.cursor = "pointer"; // Activer le clic sur le haut-parleur
-    speakerImage.style.opacity = "1"; // Rendre l'image pleinement visible
+    speakerImage.style.cursor = "pointer";
+    speakerImage.style.opacity = "1";
   }
+});
+
+document.getElementById("contact").addEventListener("click", () => {
+  typeWriter(
+    `En cas de besoin, n'hésitez pas à me contacter via les coordonnées ci-dessous :
+
+Téléphone : +33 6 17 08 18 16
+E-mail : <a href="mailto:thomas.vidal0494@gmail.com" style="color:yellow; target="_blank">thomas.vidal0494@gmail.com</a>
+LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/" style="color:yellow; target="_blank">Thomas Vidal</a>`,
+    "textBox"
+  );
 });
