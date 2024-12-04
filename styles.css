@@ -40,7 +40,6 @@ body, h1, h2, h3, p, a {
   color: yellow;
 }
 
-
 @keyframes slideUp {
     0% {
         bottom: -60px;
@@ -66,7 +65,6 @@ body, h1, h2, h3, p, a {
     opacity: 1;
     transform: translateY(0);
 }
-
 
 .text-box {
     position: absolute;
@@ -156,36 +154,36 @@ body, h1, h2, h3, p, a {
     flex-direction: column;
     gap: 20px;
     transform: rotate(0deg);
-  }
+}
   
-  .project-list {
+.project-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     justify-items: center;
-  }
+}
   
-  .project-item {
+.project-item {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     position: relative;
-  }
+}
   
-  .project-icon {
+.project-icon {
     width: 80px;
     height: 80px;
     cursor: pointer;
     transition: transform 0.3s;
     transform: rotate(0deg);
-  }
+}
   
-  .project-icon:hover {
+.project-icon:hover {
     transform: scale(1.1);
-  }
+}
   
-  .project-description {
+.project-description {
     font-size: 24px;
     color: white;
     max-width: 400px;
@@ -193,36 +191,36 @@ body, h1, h2, h3, p, a {
     transform: rotate(0deg);
     opacity: 0;
     transition: opacity 0.3s;
-  }
+}
   
-  .project-item:hover .project-description {
+.project-item:hover .project-description {
     opacity: 1;
-  }
+}
   
-  .project-item:hover .project-icon {
+.project-item:hover .project-icon {
     transform: scale(1.1);
-  }
+}
 
-  .testimonial {
+.testimonial {
     text-align: left;
     font-size: 24px;
     line-height: 1.6;
     margin: 20px 0;
     transform: none;
-  }
+}
   
-  .testimonial-name {
+.testimonial-name {
     font-weight: bold;
     margin-bottom: 10px;
     color: orange;
-  }
+}
   
-  .testimonial-nav {
+.testimonial-nav {
     display: flex;
     justify-content: space-between;
-  }
+}
   
-  .testimonial-nav button {
+.testimonial-nav button {
     background-color: transparent;
     border: 2px solid orange;
     color: orange;
@@ -231,32 +229,31 @@ body, h1, h2, h3, p, a {
     font-family: 'VT323', monospace;
     transition: background-color 0.3s, color 0.3s;
     font-size: 20px;
-
-  }
+}
   
-  .testimonial-nav button:hover {
+.testimonial-nav button:hover {
     background-color: orange;
     color: black;
-  }
+}
   
-  .testimonial-nav button:disabled {
+.testimonial-nav button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
+}
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     :root {
-        --text-box-width: 90%; /* Réduction adaptée pour éviter les débordements */
+        --text-box-width: 90%;
     }
 
     body {
-        font-size: 14px; /* Taille réduite pour une meilleure lisibilité */
-        overflow: auto; /* Activation du défilement si nécessaire */
+        font-size: 14px;
+        overflow: auto;
     }
 
     .title {
         font-size: 28px;
-        bottom: 15%; /* Placement légèrement au-dessus pour libérer de l’espace */
+        bottom: 15%;
     }
 
     .interface {
@@ -267,26 +264,26 @@ body, h1, h2, h3, p, a {
         width: 90%; 
         padding: 10px;
         font-size: 18px;
-        max-height: 50vh; /* Ajustement pour éviter tout chevauchement */
-        bottom: 15%; /* Repositionnement au-dessus des boutons */
+        max-height: 50vh;
+        bottom: 15%;
     }
 
     .button-container {
         position: absolute;
-        bottom: 5%; /* Boutons plus proches du bas de l’écran */
-        flex-direction: row; /* Toujours alignés horizontalement */
-        gap: 10px; /* Espacement réduit */
+        bottom: 5%;
+        flex-direction: row;
+        gap: 10px;
     }
 
     .btn {
-        padding: 6px 10px; /* Taille des boutons réduite */
-        font-size: 16px; /* Texte plus petit */
-        width: auto; /* Suppression des tailles fixes */
+        padding: 6px 10px;
+        font-size: 16px;
+        width: auto;
         height: auto;
     }
 
     .project-list {
-        grid-template-columns: repeat(2, 1fr); /* Réduction à 2 colonnes */
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
 
@@ -305,7 +302,7 @@ body, h1, h2, h3, p, a {
     }
 
     .testimonial-nav {
-        flex-direction: row; /* Alignement horizontal des boutons */
+        flex-direction: row;
         gap: 10px;
     }
 
@@ -323,8 +320,8 @@ body, h1, h2, h3, p, a {
     .text-box {
         padding: 8px;
         font-size: 16px;
-        max-height: 45vh; /* Encore plus bas pour éviter le chevauchement */
-        bottom: 20%; /* Placement au-dessus des boutons */
+        max-height: 45vh;
+        bottom: 20%;
     }
 
     .btn {
@@ -333,11 +330,11 @@ body, h1, h2, h3, p, a {
     }
 
     .button-container {
-        bottom: 5%; /* Ajustement pour rester visible sans chevaucher */
+        bottom: 5%;
     }
 
     .project-list {
-        grid-template-columns: 1fr; /* Une seule colonne pour les très petits écrans */
+        grid-template-columns: 1fr;
         gap: 8px;
     }
 
