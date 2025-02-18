@@ -116,11 +116,11 @@ const testimonials = [
     text: "Thomas a su s'adapter rapidement à notre environnement professionnel. Très ponctuel et très sérieux, il a su aider l'équipe et s'en faire apprécier."
   },
   {
-    name: "Marima, Manager Mc Donald's",
+    name: "Mariama, Manager Mc Donald's",
     text: "Il essaye toujours de faire de son mieux en se montrant autonome et en se proposant pour toutes les tâches."
   },
   {
-    name: "Anthony, Camarade",
+    name: "Anthony, Camarade de projet de refonte de site web",
     text: "Travailler avec Thomas sur des projets d'équipe est toujours agréable. Il est perfectionniste et apporte une vraie plus-value au travail collectif."
   }
 ];
@@ -327,7 +327,8 @@ Téléphone :
 +33 6 17 08 18 16
 
 E-mail : <a href="mailto:thomas.vidal0494@gmail.com" style="color:yellow; target="_blank">thomas.vidal0494@gmail.com</a>
-LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/" style="color:yellow; target="_blank">Thomas Vidal</a>`,
+LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/" style="color:yellow; target="_blank">Thomas Vidal</a>
+Mon CV : <a href="C:/Users/toto2/Downloads/CV Thomas_VIDAL.pdf" download="CV Thomas_VIDAL.pdf">Télécharger le CV</a>`,
     "textBox"
   );
 });
