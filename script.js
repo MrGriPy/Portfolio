@@ -66,11 +66,11 @@ document.getElementById("bio").addEventListener("click", () => {
   typeWriter(
     `Bonjour, je m'appelle Thomas Vidal.
 
-Je suis passionné par le jeu vidéo depuis toujours, notamment par le game design, son histoire et son impact sur notre société. Mon objectif à long terme est de travailler dans ce domaine pour créer des expériences immersives et uniques.
+Je suis passionné par le développement web et la création numérique, notamment par la manière dont ces outils peuvent transformer la communication, l'expérience utilisateur et l'accès à l'information. Mon objectif à long terme est de travailler dans ce domaine pour concevoir des projets innovants.
 
 Grâce à mon parcours en STI2D qui a été une étape clé après avoir surmonté une erreur de filière, j'ai réussi à intégrer le BUT MMI de Gustave Eiffel à Champs-sur-Marne. Ce parcours témoigne de ma détermination et de ma résilience, des qualités que je considère essentielles pour la réussite de mon parcours.
 
-J'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et After Effects. Travailler dans le game design me permettrait de contribuer à l'industrie en captivant les joueurs de la même manière que les jeux ont su me captiver.`,
+J'ai acquis des compétences techniques en HTML/CSS/JS, PHP, Premiere Pro, et After Effects. Travailler dans les domaines du web, de la communication ou de l’audiovisuel me permettrait d'exploiter ces compétences afin de les approfondir.`,
     "textBox"
   );
 });
