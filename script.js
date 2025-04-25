@@ -79,7 +79,7 @@ document.getElementById("projets").addEventListener("click", () => {
   const projectHTML = `
     <div class="project-list">
       <div class="project-item">
-        <img src="img/vidaletfils.PNG" alt="Projet 1" class="project-icon" onclick="window.open('https://github.com/MrGriPy/SCI-Vidal-et-Fils')" />
+        <img src="img/vidaletfils.PNG" alt="Projet 1" class="project-icon" onclick="window.open('https://vidal.butmmi.o2switch.site/Vidal-et-Fils/')" />
         <div class="project-description">VIDAL ET FILS : Site de location ayant pour but de tester mes compétences en HTML, CSS, JavaScript, et PHP.</div>
       </div>
       <div class="project-item">
