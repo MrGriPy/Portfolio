@@ -80,7 +80,7 @@ document.getElementById("projets").addEventListener("click", () => {
     <div class="project-list">
       <div class="project-item">
         <img src="img/vidaletfils.PNG" alt="Projet 1" class="project-icon" onclick="window.open('https://vidal.butmmi.o2switch.site/Vidal-et-Fils/')" />
-        <div class="project-description">VIDAL ET FILS : Site de location ayant pour but de tester mes compétences en HTML, CSS, JavaScript, et PHP.</div>
+        <div class="project-description">SCI VIDAL ET FILS : Site de location ayant pour but de tester mes compétences en HTML, CSS, JavaScript, et PHP.</div>
       </div>
       <div class="project-item">
         <img src="img/vgslogo.png" alt="Projet 2" class="project-icon" onclick="window.open('https://mrgripy.github.io/VGS/')" />
@@ -92,7 +92,7 @@ document.getElementById("projets").addEventListener("click", () => {
       </div>
       <div class="project-item">
         <img src="img/portrait-chinois.png" alt="Projet 4" class="project-icon" onclick="window.open('https://mrgripy.github.io/portrait-chinois/')" />
-        <div class="project-description">PORTRAIT CHINOIS : Site qui me permet de me présenter sous un autre angle, pour but de tester mes compétences en HTML, CSS, et JavaScript. Il s'agit d'un petit projet réalisé en première années.</div>
+        <div class="project-description">PORTRAIT CHINOIS : Site qui me permet de me présenter sous un autre angle, pour but de tester mes compétences en HTML, CSS, et JavaScript. Il s'agit d'un petit projet réalisé en début de première année.</div>
       </div>
       <div class="project-item">
         <img src="img/blog.png" alt="Projet 5" class="project-icon" onclick="window.open('https://github.com/MrGriPy/Mini-blog')" />
