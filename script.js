@@ -169,7 +169,7 @@ function displayTestimonial(index) {
 
 document.getElementById("opquast").addEventListener("click", () => {
   typeWriter(
-    "En avril 2025, je passerai la certification Opquast, qui atteste des bonnes pratiques en matière de qualité web. L'accessibilité, la performance, et la qualité du contenu sur le web sont des aspects essentiels pour garantir une expérience utilisateur optimale. Elle complétera ainsi mon parcours et mes projets en ligne, en assurant que mes créations respectent les normes du développement web.",
+    "En avril 2025, j'ai passé la certification Opquast, qui atteste des bonnes pratiques en matière de qualité web. L'accessibilité, la performance, et la qualité du contenu sur le web sont des aspects essentiels pour garantir une expérience utilisateur optimale.",
     "textBox"
   );
 });
@@ -332,3 +332,4 @@ Mon CV : <a href="C:/Users/toto2/Downloads/CV Thomas_VIDAL.pdf" download="CV Tho
     "textBox"
   );
 });
+
