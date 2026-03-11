@@ -328,8 +328,10 @@ Téléphone :
 
 E-mail : <a href="mailto:thomas.vidal0494@gmail.com" style="color:yellow; target="_blank">thomas.vidal0494@gmail.com</a>
 LinkedIn : <a href="https://www.linkedin.com/in/thomas-vidal-925a1a296/" style="color:yellow; target="_blank">Thomas Vidal</a>
+Github : <a href="https://github.com/MrGriPystyle="color:yellow; target="_blank">Mr GriPy</a>
 Mon CV : <a href="C:/Users/toto2/Downloads/CV Thomas_VIDAL.pdf" download="CV Thomas_VIDAL.pdf" style="color:yellow; target="_blank">Télécharger le CV</a>`,
     "textBox"
   );
 });
+
 
