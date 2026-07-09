@@ -1,0 +1,551 @@
+/* Port fidèle du styles.css de Portfolio-old, adapté à la version React.
+   Palette et typo inchangées : noir, blanc, orange, jaune, VT323. */
+
+:root {
+  --text-box-width: min(1000px, 92vw);
+  --orange: orange;
+  --yellow: yellow;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: 'VT323', monospace;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* --- Scène 3D (l'interface principale) --- */
+.scene-3d {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+/* --- Scanlines CRT + vignette, par-dessus tout --- */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.14) 0px,
+      rgba(0, 0, 0, 0.14) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.42) 100%);
+}
+
+/* --- Titre --- */
+.title {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -60px;
+  font-size: 50px;
+  color: var(--orange);
+  font-family: 'VT323', monospace;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s;
+  animation: slideUp 1s forwards;
+  text-shadow: 0 0 18px rgba(255, 165, 0, 0.35);
+}
+
+.title:hover {
+  color: var(--yellow);
+}
+
+.title:disabled {
+  cursor: default;
+}
+
+@keyframes slideUp {
+  from {
+    bottom: -60px;
+  }
+  to {
+    bottom: 50vh;
+  }
+}
+
+.title--top {
+  animation: slideUpOnClick 1s forwards;
+}
+
+@keyframes slideUpOnClick {
+  from {
+    bottom: 50vh;
+  }
+  to {
+    bottom: calc(100vh - 110px);
+  }
+}
+
+/* --- Indication de navigation --- */
+.hint {
+  position: fixed;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  margin: 0;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.55);
+  text-align: center;
+  animation: hintFade 1s 0.8s both;
+  pointer-events: none;
+}
+
+@keyframes hintFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --- Vue "dans la télé" : le contenu est la chaîne diffusée --- */
+.tv-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at center, rgba(42, 32, 12, 0.5), rgba(0, 0, 0, 0.94) 80%),
+    #070502;
+  transform-origin: center;
+  animation: tvOn 0.45s cubic-bezier(0.2, 0.85, 0.3, 1) both;
+}
+
+/* Bande de balayage cathodique qui parcourt l'écran en continu */
+.tv-screen::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -35%;
+  height: 35%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 170, 50, 0.05) 42%,
+    rgba(255, 214, 120, 0.1) 50%,
+    rgba(255, 170, 50, 0.05) 58%,
+    transparent
+  );
+  animation: tvSweep 6.5s linear infinite;
+}
+
+@keyframes tvSweep {
+  to {
+    transform: translateY(390%);
+  }
+}
+
+/* Halo de phosphore qui respire doucement derrière le contenu */
+.tv-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(255, 160, 45, 0.11),
+    transparent 62%
+  );
+  animation: tvBreathe 4.5s ease-in-out infinite;
+}
+
+@keyframes tvBreathe {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Allumage cathodique : ligne lumineuse qui se déploie verticalement */
+@keyframes tvOn {
+  0% {
+    transform: scaleY(0.006);
+    filter: brightness(6);
+  }
+  55% {
+    transform: scaleY(1.02);
+    filter: brightness(1.7);
+  }
+  100% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-screen,
+  .tv-screen::before,
+  .tv-screen::after {
+    animation: none;
+  }
+}
+
+.tv-screen__header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(940px, 100%);
+  margin: 0 auto;
+  padding: 7vh 28px 12px;
+}
+
+.tv-screen__title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: normal;
+  color: var(--orange);
+  text-shadow: 0 0 12px rgba(255, 150, 20, 0.55);
+}
+
+.tv-screen__close {
+  background: transparent;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.tv-screen__close:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.tv-screen__content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(940px, 100%);
+  margin: 0 auto;
+  padding: 12px 28px 32px;
+  overflow-y: auto;
+  font-size: 23px;
+  text-align: left;
+  scroll-behavior: smooth;
+  text-shadow: 0 0 7px rgba(255, 170, 60, 0.28);
+}
+
+/* Marges auto : centre verticalement quand le contenu est court,
+   scroll normal depuis le haut quand il déborde */
+.tv-screen__inner {
+  margin: auto 0;
+  padding-bottom: 6vh;
+}
+
+.typed-text {
+  position: relative;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* Le fantôme réserve la hauteur finale, le texte tapé se superpose :
+   rien ne bouge pendant la frappe, les lignes apparaissent vers le bas */
+.typed-text__ghost {
+  visibility: hidden;
+}
+
+.typed-text__live {
+  position: absolute;
+  inset: 0;
+}
+
+/* --- Boutons (barre fixe en bas, accès clavier aux planètes) --- */
+.button-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  background-color: transparent;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  padding: 10px 20px;
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  font-family: 'VT323', monospace;
+}
+
+.btn:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+
+.btn:active {
+  color: lightyellow;
+  border-color: lightyellow;
+}
+
+.btn--active {
+  background-color: var(--orange);
+  color: black;
+}
+
+.btn--active:hover {
+  color: black;
+}
+
+/* --- Projets --- */
+/* La chaîne Projets s'élargit pour étaler les icônes sans scroll */
+.tv-screen__content:has(.projects-wrap) {
+  width: min(1560px, 96vw);
+}
+
+.projects-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 22px 14px;
+  justify-items: center;
+}
+
+.project-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.project-icon {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  cursor: pointer;
+  transition: transform 0.3s, filter 0.3s;
+}
+
+.project-item--active .project-icon {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.55));
+}
+
+.project-name {
+  font-size: 19px;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.3s;
+}
+
+.project-item--active .project-name {
+  color: var(--yellow);
+}
+
+/* Panneau partagé : la description du projet survolé, hauteur réservée
+   pour que la grille ne bouge jamais */
+.project-desc-panel {
+  min-height: 108px;
+  padding: 14px 20px;
+  border: 1px solid rgba(255, 165, 0, 0.45);
+  background: rgba(30, 20, 5, 0.35);
+  font-size: 21px;
+  line-height: 1.35;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* --- Témoignages --- */
+.testimonial {
+  font-size: 24px;
+  line-height: 1.6;
+}
+
+.testimonial-name {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--orange);
+}
+
+.testimonial-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.testimonial-nav button {
+  background-color: transparent;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  padding: 5px 10px;
+  cursor: pointer;
+  font-family: 'VT323', monospace;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 20px;
+}
+
+.testimonial-nav button:hover:not(:disabled) {
+  background-color: var(--orange);
+  color: black;
+}
+
+.testimonial-nav button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Contact --- */
+.contact-links {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+
+.contact-links a {
+  color: var(--yellow);
+}
+
+/* --- Haut-parleur --- */
+.speaker {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 26;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.speaker img {
+  width: 100%;
+  height: 100%;
+}
+
+.speaker:hover {
+  transform: scale(1.1);
+}
+
+.speaker--disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* --- Focus clavier --- */
+:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 2px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .title {
+    font-size: 28px;
+    width: 100%;
+  }
+
+  .tv-screen__header {
+    padding: 4vh 14px 6px;
+  }
+
+  .tv-screen__title {
+    font-size: 26px;
+  }
+
+  .tv-screen__close {
+    font-size: 16px;
+    padding: 4px 10px;
+  }
+
+  .tv-screen__content {
+    font-size: 18px;
+    padding: 8px 14px 60px;
+  }
+
+  .hint {
+    bottom: 70px;
+    font-size: 16px;
+    width: 90%;
+  }
+
+  .button-container {
+    gap: 10px;
+  }
+
+  .btn {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+
+  .project-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px 10px;
+  }
+
+  .project-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .project-name {
+    font-size: 15px;
+  }
+
+  .project-desc-panel {
+    min-height: 96px;
+    font-size: 17px;
+    padding: 10px 12px;
+  }
+
+  .testimonial {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 22px;
+  }
+
+  .project-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
