@@ -18,6 +18,22 @@ body {
   height: 100vh;
   margin: 0;
   overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Mobile-specific body adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
+  }
 }
 
 /* --- Scène 3D (l'interface principale) --- */
@@ -25,6 +41,24 @@ body {
   position: fixed;
   inset: 0;
   z-index: 0;
+  transition: all 0.3s ease;
+}
+
+/* Smooth transitions for responsive changes */
+.scene-3d canvas {
+  transition: all 0.3s ease;
+}
+
+.title {
+  transition: all 0.3s ease;
+}
+
+.button-container {
+  transition: all 0.3s ease;
+}
+
+.tv-screen {
+  transition: all 0.3s ease;
 }
 
 /* --- Scanlines CRT + vignette, par-dessus tout --- */
@@ -44,6 +78,47 @@ body {
     radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.42) 100%);
 }
 
+/* --- Bouton d'entrée --- */
+.entry-button {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 25vh;
+  background: black;
+  border: 2px solid var(--orange);
+  color: var(--orange);
+  padding: 15px 30px;
+  font-size: 26px;
+  font-family: 'VT323', monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: entryButtonFadeIn 1s ease-out 0.5s both;
+  z-index: 5;
+  text-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+}
+
+.entry-button:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: black;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.entry-button:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+@keyframes entryButtonFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 /* --- Titre --- */
 .title {
   position: fixed;
@@ -59,6 +134,28 @@ body {
   transition: color 0.3s;
   animation: slideUp 1s forwards;
   text-shadow: 0 0 18px rgba(255, 165, 0, 0.35);
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* Name group styling to prevent separation */
+.name-group {
+  white-space: nowrap;
+}
+
+/* Mobile title adjustments */
+@media (max-width: 768px) {
+  .title {
+    line-height: 1.2;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    line-height: 1.2;
+    max-width: 90vw;
+  }
 }
 
 .title:hover {
@@ -224,12 +321,12 @@ body {
 }
 
 .tv-screen__close {
-  background: transparent;
+  background: black;
   border: 2px solid var(--orange);
   color: var(--orange);
   font-family: 'VT323', monospace;
-  font-size: 20px;
-  padding: 4px 14px;
+  font-size: 22px;
+  padding: 6px 16px;
   cursor: pointer;
   transition: color 0.3s, border-color 0.3s;
 }
@@ -293,11 +390,11 @@ body {
 }
 
 .btn {
-  background-color: transparent;
+  background-color: black;
   border: 2px solid var(--orange);
   color: var(--orange);
-  padding: 10px 20px;
-  font-size: 24px;
+  padding: 12px 24px;
+  font-size: 26px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   font-family: 'VT323', monospace;
@@ -404,14 +501,14 @@ body {
 }
 
 .testimonial-nav button {
-  background-color: transparent;
+  background-color: black;
   border: 2px solid var(--orange);
   color: var(--orange);
-  padding: 5px 10px;
+  padding: 6px 12px;
   cursor: pointer;
   font-family: 'VT323', monospace;
   transition: background-color 0.3s, color 0.3s;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .testimonial-nav button:hover:not(:disabled) {
@@ -433,6 +530,71 @@ body {
 
 .contact-links a {
   color: var(--yellow);
+  transition: color 0.3s ease;
+}
+
+.contact-links a:hover {
+  color: #fff;
+}
+
+.contact-link {
+  color: var(--yellow) !important;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #fff !important;
+}
+
+/* Force inline display for contact elements */
+.contact-line {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.contact-line .typed-text {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.contact-line .typed-text p {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.contact-line .typed-text__ghost,
+.contact-line .typed-text__live {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.contact-line .contact-link {
+  display: inline !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Comme .typed-text : le fantôme réserve la hauteur finale du bloc contact,
+   les lignes tapées se superposent et remplissent l'espace vers le bas */
+.contact-block {
+  position: relative;
+  display: block;
+  white-space: pre-wrap;
+}
+
+.contact-block__ghost {
+  visibility: hidden;
+}
+
+.contact-block__live {
+  position: absolute;
+  inset: 0;
 }
 
 /* --- Haut-parleur --- */
@@ -464,6 +626,25 @@ body {
   opacity: 0.5;
 }
 
+/* Mobile speaker positioning */
+@media (max-width: 768px) {
+  .speaker {
+    width: 60px;
+    height: 60px;
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .speaker {
+    width: 50px;
+    height: 50px;
+    bottom: 25px;
+    right: 25px;
+  }
+}
+
 /* --- Focus clavier --- */
 :focus-visible {
   outline: 2px solid var(--yellow);
@@ -472,9 +653,20 @@ body {
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
+  .entry-button {
+    font-size: 22px;
+    padding: 16px 32px;
+    bottom: 15vh;
+    min-height: 56px;
+    width: 90%;
+    max-width: 320px;
+  }
+
   .title {
-    font-size: 28px;
+    font-size: 32px;
     width: 100%;
+    text-align: center;
+    padding: 0 20px;
   }
 
   .tv-screen__header {
@@ -486,28 +678,44 @@ body {
   }
 
   .tv-screen__close {
-    font-size: 16px;
-    padding: 4px 10px;
+    font-size: 18px;
+    padding: 6px 14px;
+    min-height: 40px;
   }
 
   .tv-screen__content {
     font-size: 18px;
-    padding: 8px 14px 60px;
+    padding: 12px 20px 70px;
+  }
+
+  .typed-text {
+    font-size: 18px;
+    line-height: 1.4;
   }
 
   .hint {
-    bottom: 70px;
-    font-size: 16px;
+    bottom: 120px;
+    font-size: 18px;
     width: 90%;
+    text-align: center;
+    padding: 0 20px;
   }
 
   .button-container {
-    gap: 10px;
+    gap: 16px;
+    padding: 0 20px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
   }
 
   .btn {
-    padding: 6px 10px;
-    font-size: 16px;
+    padding: 16px 24px;
+    font-size: 22px;
+    min-height: 56px;
+    width: 100%;
+    max-width: 280px;
+    text-align: center;
   }
 
   .project-list {
@@ -525,27 +733,98 @@ body {
   }
 
   .project-desc-panel {
-    min-height: 96px;
     font-size: 17px;
-    padding: 10px 12px;
+    padding: 12px 16px;
+    min-height: 90px;
   }
 
   .testimonial {
     font-size: 18px;
   }
+
+  .testimonial-nav button {
+    font-size: 18px;
+    padding: 6px 12px;
+    min-height: 40px;
+  }
 }
 
 @media (max-width: 480px) {
+  .entry-button {
+    font-size: 20px;
+    padding: 14px 28px;
+    bottom: 12vh;
+    min-height: 52px;
+    width: 90%;
+    max-width: 280px;
+  }
+
   .title {
-    font-size: 22px;
+    font-size: 26px;
+    text-align: center;
+    padding: 0 15px;
+  }
+
+  .btn {
+    padding: 14px 20px;
+    font-size: 20px;
+    min-height: 52px;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .button-container {
+    gap: 12px;
+    padding: 0 15px;
+  }
+
+  .tv-screen__close {
+    font-size: 16px;
+    padding: 5px 12px;
+    min-height: 36px;
+  }
+
+  .testimonial-nav button {
+    font-size: 16px;
+    padding: 5px 10px;
+    min-height: 36px;
   }
 
   .project-list {
     grid-template-columns: repeat(2, 1fr);
+    gap: 16px 12px;
   }
 
   .project-icon {
     width: 50px;
     height: 50px;
+  }
+
+  .project-name {
+    font-size: 14px;
+  }
+
+  .project-desc-panel {
+    font-size: 16px;
+    padding: 12px 14px;
+    min-height: 80px;
+  }
+
+  .hint {
+    bottom: 100px;
+    font-size: 16px;
+    width: 90%;
+    text-align: center;
+    padding: 0 15px;
+  }
+
+  .tv-screen__content {
+    font-size: 16px;
+    padding: 12px 18px 60px;
+  }
+
+  .typed-text {
+    font-size: 16px;
+    line-height: 1.4;
   }
 }

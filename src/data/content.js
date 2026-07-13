@@ -105,5 +105,5 @@ export const CONTACT = {
     url: 'https://github.com/MrGriPy',
   },
   // Déposer le fichier CV dans public/ sous ce nom pour activer le lien.
-  cv: '/CV_Thomas_VIDAL.pdf',
+  cv: '/CV_Thomas-VIDAL.pdf',
 }

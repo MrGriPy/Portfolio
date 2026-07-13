@@ -14,14 +14,27 @@ import {
 } from './audio.js'
 import { BIO_TEXT, OPQUAST_TEXT } from './data/content.js'
 
-// Chaque section = un écran CRT flottant, disposé en arc face à la caméra,
-// à hauteur et profondeur variées pour casser toute symétrie mécanique.
-const SECTIONS = [
-  { id: 'bio', label: 'Biographie', position: [-4.9, 2.3, -1.6], yaw: 0.42, bobSpeed: 0.9, phase: 0.4 },
-  { id: 'projets', label: 'Projets', position: [-2.5, 0.7, 0.1], yaw: 0.22, bobSpeed: 1.1, phase: 2.5 },
-  { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, -0.9], yaw: 0, bobSpeed: 0.8, phase: 4.3 },
-  { id: 'opquast', label: 'Opquast', position: [2.5, 0.7, 0.1], yaw: -0.22, bobSpeed: 1.05, phase: 1.3 },
-  { id: 'contact', label: 'Contact', position: [4.9, 2.3, -1.6], yaw: -0.42, bobSpeed: 0.95, phase: 5.2 },
+// Mobile detection helper
+const isMobile = () => {
+  return typeof window !== 'undefined' && window.innerWidth <= 768;
+}
+
+// Desktop : chaque section = un écran CRT flottant, disposé en arc face à la caméra
+const DESKTOP_SECTIONS = [
+  { id: 'bio', label: 'Biographie', position: [-4.9, 2.3, -0.5], yaw: 0.42, bobSpeed: 0.9, phase: 0.4 },
+  { id: 'projets', label: 'Projets', position: [-2.5, 0.7, 1.2], yaw: 0.22, bobSpeed: 1.1, phase: 2.5 },
+  { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, 0.2], yaw: 0, bobSpeed: 0.8, phase: 4.3 },
+  { id: 'opquast', label: 'Opquast', position: [2.5, 0.7, 1.2], yaw: -0.22, bobSpeed: 1.05, phase: 1.3 },
+  { id: 'contact', label: 'Contact', position: [4.9, 2.3, -0.5], yaw: -0.42, bobSpeed: 0.95, phase: 5.2 },
+]
+
+// Mobile : une seule TV qui change de contenu selon le bouton sélectionné
+const MOBILE_SECTIONS = [
+  { id: 'bio', label: 'Biographie', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
+  { id: 'projets', label: 'Projets', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
+  { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
+  { id: 'opquast', label: 'Opquast', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
+  { id: 'contact', label: 'Contact', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
 ]
 
 const REDUCED_MOTION =
@@ -33,9 +46,37 @@ export default function App() {
   const [section, setSection] = useState(null)
   const [zoomed, setZoomed] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
+  const [screenWidth, setScreenWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
+  // Dynamic responsive detection
+  useEffect(() => {
+    const handleResize = () => {
+      const newWidth = window.innerWidth
+      const wasMobile = screenWidth <= 768
+      const isMobileNow = newWidth <= 768
+      
+      setScreenWidth(newWidth)
+      
+      // Reset section when switching between modes to avoid conflicts
+      if (wasMobile !== isMobileNow) {
+        setSection(null)
+        setZoomed(false)
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [screenWidth])
+
+  // Use appropriate sections based on device
+  const mobile = screenWidth <= 768
+  const SECTIONS = mobile ? MOBILE_SECTIONS : DESKTOP_SECTIONS
   const current = SECTIONS.find((s) => s.id === section)
+  
+  // Key to force re-render of 3D scene when layout changes
+  const sceneKey = mobile ? 'mobile' : 'desktop'
 
+  
   // Même déroulé que Portfolio-old : clic sur le titre → il glisse vers le
   // haut, le système solaire se déploie, la musique démarre (geste utilisateur).
   function enter() {
@@ -47,6 +88,7 @@ export default function App() {
 
   function openSection(id) {
     playClick()
+    // Use same behavior for both mobile and desktop
     setZoomed(false)
     setSection((prev) => (prev === id ? null : id))
   }
@@ -80,13 +122,26 @@ export default function App() {
   return (
     <>
       <Scene3D
+        key={sceneKey}
         sections={SECTIONS}
         focusedId={entered ? section : null}
+        zoomed={zoomed}
         onSelect={openSection}
         onArrived={handleArrived}
         animate={!REDUCED_MOTION && !zoomed}
         interactive={entered}
       />
+
+      {!entered && (
+        <button
+          type="button"
+          className="entry-button"
+          onClick={enter}
+          aria-label="Entrer dans le portfolio"
+        >
+          Découvrir
+        </button>
+      )}
 
       <button
         type="button"
@@ -94,13 +149,10 @@ export default function App() {
         onClick={enter}
         disabled={entered}
       >
-        Portfolio de Thomas Vidal
+        Portfolio de <span className="name-group">Thomas Vidal</span>
       </button>
 
-      {entered && !section && (
-        <p className="hint">Cliquez sur un écran pour l&apos;allumer</p>
-      )}
-
+      
       {entered && current && zoomed && (
         <section className="tv-screen" aria-label={current.label}>
           <header className="tv-screen__header">

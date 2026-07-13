@@ -254,7 +254,7 @@ function ScreenTV({ cfg, index, focused, animate, onSelect, registerRef }) {
       position={[cfg.position[0], cfg.position[1] - 1.4, cfg.position[2] - 34]}
       rotation={[0, cfg.yaw, 0]}
     >
-      <group ref={inner}>
+      <group ref={inner} scale={cfg.scale || 1}>
         {/* Corps du téléviseur */}
         <mesh
           geometry={tvBodyGeo}
@@ -364,22 +364,25 @@ function RetroGrid({ animate }) {
 }
 
 // --- Poussière spatiale ambiante : particules dérivant lentement ---
-const DUST_COUNT = 500
+const DUST_COUNT_DESKTOP = 500
+const DUST_COUNT_MOBILE = 200
 
 function Dust({ animate }) {
   const mat = useRef(null)
+  const mobile = isMobile()
+  const dustCount = mobile ? DUST_COUNT_MOBILE : DUST_COUNT_DESKTOP
 
   const { positions, seeds } = useMemo(() => {
-    const positions = new Float32Array(DUST_COUNT * 3)
-    const seeds = new Float32Array(DUST_COUNT)
-    for (let i = 0; i < DUST_COUNT; i++) {
+    const positions = new Float32Array(dustCount * 3)
+    const seeds = new Float32Array(dustCount)
+    for (let i = 0; i < dustCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 26
       positions[i * 3 + 1] = Math.random() * 10 - 2
       positions[i * 3 + 2] = (Math.random() - 0.5) * 18
       seeds[i] = Math.random() * Math.PI * 2
     }
     return { positions, seeds }
-  }, [])
+  }, [dustCount])
 
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
 
@@ -542,9 +545,12 @@ function SelectionBurst({ burstRef }) {
 // --- Télés d'ambiance : tunnel de CRT identiques aux principales. ---
 // --- Chaque télé garde sa place sur son anneau, l'ensemble dérive vers ---
 // --- la caméra au rythme de la grille et regagne le fond en bouclant. ---
-const BG_RING_Z = [8, 0, -8, -16, -24, -32, -40]
-const BG_PER_RING = 22
-const BG_TV_COUNT = BG_RING_Z.length * BG_PER_RING
+const BG_RING_Z_DESKTOP = [8, 0, -8, -16, -24, -32, -40]
+const BG_RING_Z_MOBILE = [0, -16, -32]
+const BG_PER_RING_DESKTOP = 22
+const BG_PER_RING_MOBILE = 12
+const BG_TV_COUNT_DESKTOP = BG_RING_Z_DESKTOP.length * BG_PER_RING_DESKTOP
+const BG_TV_COUNT_MOBILE = BG_RING_Z_MOBILE.length * BG_PER_RING_MOBILE
 // Sortie derrière la caméra (z = 12) et spawn enfoui dans le fog (z = -44) :
 // aucune apparition ni disparition visible, on les voit émerger de loin
 const BG_FRONT = 12
@@ -575,16 +581,20 @@ function FloatingTVs({ animate }) {
   const time = useRef(0)
   const filled = useRef(false)
   const dummy = useMemo(() => new THREE.Object3D(), [])
+  const mobile = isMobile()
+  const ringZ = mobile ? BG_RING_Z_MOBILE : BG_RING_Z_DESKTOP
+  const perRing = mobile ? BG_PER_RING_MOBILE : BG_PER_RING_DESKTOP
+  const tvCount = mobile ? BG_TV_COUNT_MOBILE : BG_TV_COUNT_DESKTOP
 
   const items = useMemo(() => {
     const list = []
-    BG_RING_Z.forEach((ringZ, r) => {
-      for (let j = 0; j < BG_PER_RING; j++) {
+    ringZ.forEach((ringZ, r) => {
+      for (let j = 0; j < perRing; j++) {
         // Chaque télé garde sa place (x, y) sur l'anneau, seule la
         // profondeur défile — le bordel vient des orientations.
         // Les créneaux angulaires réguliers bornent l'écart maximal
         // entre voisines, la relaxation ci-dessous borne le minimal.
-        const a = (j / BG_PER_RING) * Math.PI * 2 + r * 0.31 + (Math.random() - 0.5) * 0.22
+        const a = (j / perRing) * Math.PI * 2 + r * 0.31 + (Math.random() - 0.5) * 0.22
         const rn = 1 + (Math.random() - 0.5) * 0.24
         list.push({
           x: Math.cos(a) * 8.3 * rn,
@@ -649,10 +659,10 @@ function FloatingTVs({ animate }) {
   }, [])
 
   const seeds = useMemo(() => {
-    const arr = new Float32Array(BG_TV_COUNT)
-    for (let i = 0; i < BG_TV_COUNT; i++) arr[i] = Math.random() * 10
+    const arr = new Float32Array(tvCount)
+    for (let i = 0; i < tvCount; i++) arr[i] = Math.random() * 10
     return arr
-  }, [])
+  }, [tvCount])
 
   const uniforms = useMemo(() => ({ uTime: { value: 0 } }), [])
 
@@ -665,7 +675,7 @@ function FloatingTVs({ animate }) {
     const t = time.current
     meshes[2].material.uniforms.uTime.value = t
 
-    for (let i = 0; i < BG_TV_COUNT; i++) {
+    for (let i = 0; i < tvCount; i++) {
       const it = items[i]
       // L'anneau coulisse vers la caméra et redisparaît au fond du tunnel
       const raw = it.z0 + t * BG_SPEED
@@ -697,65 +707,65 @@ function FloatingTVs({ animate }) {
     <group>
       <instancedMesh
         ref={refs[0]}
-        args={[tvBodyGeo, tvBodyMat, BG_TV_COUNT]}
+        args={[tvBodyGeo, tvBodyMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[1]}
-        args={[tvHumpGeo, tvBodyMat, BG_TV_COUNT]}
+        args={[tvHumpGeo, tvBodyMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[3]}
-        args={[footGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[footGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[4]}
-        args={[footGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[footGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[5]}
-        args={[antennaGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[antennaGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[6]}
-        args={[antennaGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[antennaGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[7]}
-        args={[knobGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[knobGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[8]}
-        args={[knobGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[knobGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[9]}
-        args={[slitGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[slitGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[10]}
-        args={[slitGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[slitGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[11]}
-        args={[slitGeo, tvDetailMat, BG_TV_COUNT]}
+        args={[slitGeo, tvDetailMat, tvCount]}
         frustumCulled={false}
       />
       <instancedMesh
         ref={refs[12]}
-        args={[ledGeo, ledMat, BG_TV_COUNT]}
+        args={[ledGeo, ledMat, tvCount]}
         frustumCulled={false}
       />
-      <instancedMesh ref={refs[2]} args={[undefined, undefined, BG_TV_COUNT]} frustumCulled={false}>
+      <instancedMesh ref={refs[2]} args={[undefined, undefined, tvCount]} frustumCulled={false}>
         <planeGeometry args={[1.44, 1.0, 12, 9]}>
           <instancedBufferAttribute attach="attributes-aSeed" args={[seeds, 1]} />
         </planeGeometry>
@@ -816,9 +826,54 @@ function CameraRig({ focusedId, tvRefs, animate, onArrived }) {
   const pos = useRef(new THREE.Vector3(0, 1.7, 10.5))
   const look = useRef(new THREE.Vector3(0, 1.1, 0))
   const arrived = useRef(null)
+  const mobile = isMobile()
 
   useFrame((state) => {
-    const tv = focusedId ? tvRefs.current[focusedId] : null
+    let tv = null
+    
+    if (mobile) {
+      // Mobile: use direct camera positioning instead of TV references
+      if (focusedId) {
+        // Direct camera positioning for mobile zoom
+        const targetPos = new THREE.Vector3(0, 1.8, -3.5)
+        const targetLook = new THREE.Vector3(0, 1.8, -4.0)
+        
+        if (animate) {
+          pos.current.lerp(targetPos, 0.045)
+          look.current.lerp(targetLook, 0.045)
+        } else {
+          pos.current.copy(targetPos)
+          look.current.copy(targetLook)
+        }
+        
+        // Trigger arrived callback for mobile
+        if (!arrived.current && pos.current.distanceTo(targetPos) < 0.1) {
+          arrived.current = true
+          onArrived()
+        }
+      } else {
+        // Reset to mobile default position
+        const defaultPos = new THREE.Vector3(0, 1.7, 3.5)
+        const defaultLook = new THREE.Vector3(0, 1.1, 0)
+        
+        if (animate) {
+          pos.current.lerp(defaultPos, 0.045)
+          look.current.lerp(defaultLook, 0.045)
+        } else {
+          pos.current.copy(defaultPos)
+          look.current.copy(defaultLook)
+        }
+        
+        arrived.current = null
+      }
+      
+      camera.position.copy(pos.current)
+      camera.lookAt(look.current)
+      return
+    } else {
+      // Desktop: use original TV reference system
+      tv = focusedId ? tvRefs.current[focusedId] : null
+    }
 
     if (tv) {
       // Centre de l'écran en monde (le groupe externe ne subit pas le bob,
@@ -855,9 +910,15 @@ function CameraRig({ focusedId, tvRefs, animate, onArrived }) {
   return null
 }
 
-export function Scene3D({ sections, focusedId, onSelect, onArrived, animate, interactive }) {
+// Mobile detection helper
+const isMobile = () => {
+  return typeof window !== 'undefined' && window.innerWidth <= 768;
+}
+
+export function Scene3D({ sections, focusedId, zoomed, onSelect, onArrived, animate, interactive }) {
   const tvRefs = useRef({})
   const burstRef = useRef(() => {})
+  const mobile = isMobile()
 
   function registerRef(id, ref) {
     tvRefs.current[id] = ref
@@ -871,9 +932,17 @@ export function Scene3D({ sections, focusedId, onSelect, onArrived, animate, int
   return (
     <div className="scene-3d">
       <Canvas
-        dpr={[1, 1.5]}
-        gl={{ antialias: false, powerPreference: 'high-performance' }}
-        camera={{ position: [0, 1.7, 10.5], fov: 55 }}
+        dpr={mobile ? [1, 1] : [1, 1.5]}
+        gl={{ 
+          antialias: !mobile, 
+          powerPreference: mobile ? 'default' : 'high-performance',
+          alpha: false 
+        }}
+        camera={{ position: [0, 1.7, mobile ? 3.5 : 10.5], fov: mobile ? 55 : 55 }}
+        touches={{
+          enabled: true,
+          preventDefault: mobile
+        }}
       >
         <color attach="background" args={['#000000']} />
         {/* Fog noir lointain : les télés émergent progressivement du fond */}
@@ -888,18 +957,41 @@ export function Scene3D({ sections, focusedId, onSelect, onArrived, animate, int
         <SelectionBurst burstRef={burstRef} />
 
         <group>
-          {interactive &&
-            sections.map((cfg, i) => (
+          {interactive && (
+            mobile ? (
+              // Mobile: show only one TV that works independently
               <ScreenTV
-                key={cfg.id}
-                cfg={cfg}
-                index={i}
-                focused={focusedId === cfg.id}
+                key="mobile-tv"
+                cfg={{
+                  id: 'mobile-tv',
+                  label: focusedId && zoomed ? sections.find(s => s.id === focusedId)?.label || 'Portfolio' : 'Portfolio',
+                  position: [0, 1.8, -4.0],
+                  yaw: 0,
+                  bobSpeed: 0.8,
+                  phase: 0,
+                  scale: 1.5
+                }}
+                index={0}
+                focused={!!focusedId}
                 animate={animate}
-                onSelect={handleSelect}
+                onSelect={() => {}} // Mobile TV doesn't trigger camera - camera is controlled by focusedId
                 registerRef={registerRef}
               />
-            ))}
+            ) : (
+              // Desktop: show all TVs normally
+              sections.map((cfg, i) => (
+                <ScreenTV
+                  key={cfg.id}
+                  cfg={cfg}
+                  index={i}
+                  focused={focusedId === cfg.id}
+                  animate={animate}
+                  onSelect={handleSelect}
+                  registerRef={registerRef}
+                />
+              ))
+            )
+          )}
         </group>
 
         <CameraRig
