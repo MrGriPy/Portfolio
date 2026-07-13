@@ -384,20 +384,23 @@ body {
   transform: translateX(-50%);
   z-index: 10;
   display: flex;
-  gap: 20px;
+  gap: 12px;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  width: max-content;
+  max-width: 98vw;
 }
 
 .btn {
   background-color: black;
   border: 2px solid var(--orange);
   color: var(--orange);
-  padding: 12px 24px;
-  font-size: 26px;
+  padding: 10px 18px;
+  font-size: 22px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   font-family: 'VT323', monospace;
+  white-space: nowrap;
 }
 
 .btn:hover {
