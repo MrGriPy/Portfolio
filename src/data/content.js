@@ -90,7 +90,24 @@ export const TESTIMONIALS = [
   },
 ]
 
-export const OPQUAST_TEXT = `En avril 2025, j'ai passé la certification Opquast, qui atteste des bonnes pratiques en matière de qualité web. L'accessibilité, la performance, et la qualité du contenu sur le web sont des aspects essentiels pour garantir une expérience utilisateur optimale.`
+export const CERTIFICATIONS_TEXT = `Voici mes certifications. Cliquez sur l'une d'elles pour afficher le document.`
+
+export const CERTIFICATIONS = [
+  {
+    id: 'opquast',
+    name: 'Opquast',
+    type: 'pdf',
+    src: '/CERTIFICAT-OPQUAST-THOMAS-VIDAL.pdf',
+    desc: 'Certification Opquast (avril 2025) : bonnes pratiques qualité web.',
+  },
+  {
+    id: 'psc',
+    name: 'PSC',
+    type: 'image',
+    src: '/ATTESTATION-PSC-THOMAS-VIDAL.jpg',
+    desc: 'Prévention et Secours Civiques de niveau 1.',
+  },
+]
 
 export const CONTACT = {
   intro: "En cas de besoin, n'hésitez pas à me contacter via les coordonnées ci-dessous :",

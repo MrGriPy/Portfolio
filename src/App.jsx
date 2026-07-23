@@ -12,7 +12,8 @@ import {
   toggleMusic,
   isMusicStarted,
 } from './audio.js'
-import { BIO_TEXT, OPQUAST_TEXT } from './data/content.js'
+import { BIO_TEXT } from './data/content.js'
+import { Certifications } from './components/Certifications.jsx'
 
 // Mobile detection helper
 const isMobile = () => {
@@ -24,7 +25,7 @@ const DESKTOP_SECTIONS = [
   { id: 'bio', label: 'Biographie', position: [-4.9, 2.3, -0.5], yaw: 0.42, bobSpeed: 0.9, phase: 0.4 },
   { id: 'projets', label: 'Projets', position: [-2.5, 0.7, 1.2], yaw: 0.22, bobSpeed: 1.1, phase: 2.5 },
   { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, 0.2], yaw: 0, bobSpeed: 0.8, phase: 4.3 },
-  { id: 'opquast', label: 'Opquast', position: [2.5, 0.7, 1.2], yaw: -0.22, bobSpeed: 1.05, phase: 1.3 },
+  { id: 'certifications', label: 'Certifications', position: [2.5, 0.7, 1.2], yaw: -0.22, bobSpeed: 1.05, phase: 1.3 },
   { id: 'contact', label: 'Contact', position: [4.9, 2.3, -0.5], yaw: -0.42, bobSpeed: 0.95, phase: 5.2 },
 ]
 
@@ -33,7 +34,7 @@ const MOBILE_SECTIONS = [
   { id: 'bio', label: 'Biographie', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
   { id: 'projets', label: 'Projets', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
   { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
-  { id: 'opquast', label: 'Opquast', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
+  { id: 'certifications', label: 'Certifications', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
   { id: 'contact', label: 'Contact', position: [0, 2.5, -0.5], yaw: 0, bobSpeed: 0.8, phase: 0, scale: 1.5 },
 ]
 
@@ -171,7 +172,7 @@ export default function App() {
               {section === 'bio' && <TypedText text={BIO_TEXT} key="bio" />}
               {section === 'projets' && <ProjectsGrid />}
               {section === 'temoignages' && <Testimonials />}
-              {section === 'opquast' && <TypedText text={OPQUAST_TEXT} key="opquast" />}
+              {section === 'certifications' && <Certifications key="certifications" />}
               {section === 'contact' && <ContactContent />}
             </div>
           </div>
