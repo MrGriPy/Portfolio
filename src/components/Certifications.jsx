@@ -32,7 +32,7 @@ export function Certifications() {
         </button>
         {active.type === 'pdf' ? (
           <iframe
-            src={active.src}
+            src={`${active.src}#toolbar=0&navpanes=0&scrollbar=0&view=Fit`}
             title={active.name}
             className="certifications-iframe"
             aria-label={`Document ${active.name}`}
