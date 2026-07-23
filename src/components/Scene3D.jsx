@@ -21,7 +21,7 @@ const _v3 = new THREE.Vector3()
 const _q1 = new THREE.Quaternion()
 
 // --- Géométries & matériaux partagés entre tous les écrans ---
-const tvBodyGeo = new THREE.BoxGeometry(1.9, 1.35, 0.42)
+const tvBodyGeo = new THREE.BoxGeometry(2.2, 1.35, 0.42)
 // Renflement arrière du tube : tronc pyramidal (cylindre à 4 pans alignés)
 const tvHumpGeo = new THREE.CylinderGeometry(0.95, 0.66, 0.5, 4, 1)
 tvHumpGeo.rotateY(Math.PI / 4)
@@ -32,12 +32,13 @@ const knobGeo = new THREE.CylinderGeometry(0.055, 0.055, 0.05, 10)
 knobGeo.rotateX(Math.PI / 2)
 const slitGeo = new THREE.BoxGeometry(0.2, 0.022, 0.02)
 // Dalle segmentée : le renflement du verre est fait dans le vertex shader
-const screenGeo = new THREE.PlaneGeometry(1.44, 1.0, 12, 9)
+// Dalle plus large (format 2:1) pour les labels longs comme "Certifications"
+const screenGeo = new THREE.PlaneGeometry(1.8, 0.9, 12, 9)
 // Position de la dalle dans le repère du téléviseur (partagée avec la caméra).
 // Décollée franchement de la façade (0.24 vs 0.21) : à grande distance, un
 // écart d'1 mm passe sous la précision du depth buffer et la façade recouvre
 // la dalle en dehors du bombement — c'était l'ellipse noire sur les télés
-const SCREEN_LOCAL = new THREE.Vector3(-0.14, 0, 0.24)
+const SCREEN_LOCAL = new THREE.Vector3(-0.15, 0, 0.24)
 
 const tvBodyMat = new THREE.MeshStandardMaterial({ color: '#2c2c2c', flatShading: true })
 const tvDetailMat = new THREE.MeshStandardMaterial({ color: '#1a1a1a', flatShading: true })
@@ -69,11 +70,18 @@ function makeLabelTexture(label) {
   canvas.height = 256
   const ctx = canvas.getContext('2d')
   ctx.clearRect(0, 0, 512, 256)
-  ctx.font = '96px "VT323", monospace'
+  const upper = label.toUpperCase()
+  let fontSize = 96
+  const maxWidth = 512 - 32
+  do {
+    ctx.font = `${fontSize}px "VT323", monospace`
+    if (ctx.measureText(upper).width <= maxWidth) break
+    fontSize -= 4
+  } while (fontSize > 48)
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillStyle = '#ffffff'
-  ctx.fillText(label.toUpperCase(), 256, 128)
+  ctx.fillText(upper, 256, 128)
   const tex = new THREE.CanvasTexture(canvas)
   tex.colorSpace = THREE.SRGBColorSpace
   return tex
@@ -284,18 +292,18 @@ function ScreenTV({ cfg, index, focused, animate, onSelect, registerRef }) {
         </mesh>
         {/* Tube arrière, pieds, boutons, grille son, LED : silhouette cathodique */}
         <mesh geometry={tvHumpGeo} material={tvBodyMat} position={[0, 0, -0.46]} />
-        <mesh geometry={footGeo} material={tvDetailMat} position={[-0.62, -0.735, 0.02]} />
-        <mesh geometry={footGeo} material={tvDetailMat} position={[0.62, -0.735, 0.02]} />
-        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.76, 0.34, 0.225]} />
-        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.76, 0.14, 0.225]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.06, 0.215]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.13, 0.215]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.2, 0.215]} />
+        <mesh geometry={footGeo} material={tvDetailMat} position={[-0.75, -0.735, 0.02]} />
+        <mesh geometry={footGeo} material={tvDetailMat} position={[0.75, -0.735, 0.02]} />
+        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.88, 0.34, 0.225]} />
+        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.88, 0.14, 0.225]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.06, 0.215]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.13, 0.215]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.2, 0.215]} />
         <mesh
           ref={ledRef}
           geometry={ledGeo}
           material={ledMat}
-          position={[0.76, -0.45, 0.215]}
+          position={[0.88, -0.45, 0.215]}
           visible={false}
         />
         <mesh
