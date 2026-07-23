@@ -1,7 +1,7 @@
 // Gestion audio : mêmes sons que Portfolio-old (clic, blip, musique de fond).
 // La musique ne démarre qu'au clic sur le titre, comme dans l'original.
 
-import cq80Url from './assets/CQ-80.mp3'
+const cq80Url = '/CQ-80.mp3'
 
 const clickSound = new Audio('/clic.wav')
 
