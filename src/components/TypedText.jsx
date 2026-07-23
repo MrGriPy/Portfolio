@@ -6,17 +6,17 @@ import { useState, useEffect } from 'react'
 // le bloc ne bouge plus pendant la frappe, les lignes se remplissent vers
 // le bas par-dessus l'espace déjà réservé.
 export function TypedText({ text, children }) {
-  const { displayed, done } = useTypewriter(text)
-  const [showChildren, setShowChildren] = useState(false)
+  const { displayed, done, skip } = useTypewriter(text)
+  const [showChildren, setShowChildren] = useState(skip)
 
   useEffect(() => {
     if (done && !showChildren) {
       const timer = setTimeout(() => {
         setShowChildren(true)
-      }, 1000) // Délai d'1 seconde après la fin de la frappe
+      }, skip ? 0 : 1000) // Pas de délai si le texte a déjà été tapé
       return () => clearTimeout(timer)
     }
-  }, [done, showChildren])
+  }, [done, showChildren, skip])
 
   return (
     <>
