@@ -102,10 +102,10 @@ export const CERTIFICATIONS = [
   },
   {
     id: 'psc',
-    name: 'PSC',
+    name: 'Premiers Secours Citoyen',
     type: 'image',
     src: '/ATTESTATION-PSC-THOMAS-VIDAL.jpg',
-    desc: 'Prévention et Secours Civiques de niveau 1.',
+    desc: 'Attestation de fin de formation (juillet 2026) : PSC (Brevet de secourisme).',
   },
 ]
 

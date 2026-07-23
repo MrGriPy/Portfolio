@@ -20,13 +20,14 @@ const isMobile = () => {
   return typeof window !== 'undefined' && window.innerWidth <= 768;
 }
 
-// Desktop : chaque section = un écran CRT flottant, disposé en arc face à la caméra
+// Desktop : chaque section = un écran CRT flottant, rapprochées au même plan
+// avec un espacement suffisant pour éviter les chevauchements (scale 1.05)
 const DESKTOP_SECTIONS = [
-  { id: 'bio', label: 'Biographie', position: [-4.9, 2.3, -0.5], yaw: 0.42, bobSpeed: 0.9, phase: 0.4 },
-  { id: 'projets', label: 'Projets', position: [-2.5, 0.7, 1.2], yaw: 0.22, bobSpeed: 1.1, phase: 2.5 },
-  { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, 0.2], yaw: 0, bobSpeed: 0.8, phase: 4.3 },
-  { id: 'certifications', label: 'Certifications', position: [2.5, 0.7, 1.2], yaw: -0.22, bobSpeed: 1.05, phase: 1.3 },
-  { id: 'contact', label: 'Contact', position: [4.9, 2.3, -0.5], yaw: -0.42, bobSpeed: 0.95, phase: 5.2 },
+  { id: 'bio', label: 'Biographie', position: [-5.7, 2.3, 0.0], yaw: 0.50, bobSpeed: 0.9, phase: 0.4 },
+  { id: 'projets', label: 'Projets', position: [-2.85, 0.7, 0.0], yaw: 0.27, bobSpeed: 1.1, phase: 2.5 },
+  { id: 'temoignages', label: 'Témoignages', position: [0, 2.5, 0.0], yaw: 0, bobSpeed: 0.8, phase: 4.3 },
+  { id: 'certifications', label: 'Certifications', position: [2.85, 0.7, 0.0], yaw: -0.27, bobSpeed: 1.05, phase: 1.3 },
+  { id: 'contact', label: 'Contact', position: [5.7, 2.3, 0.0], yaw: -0.50, bobSpeed: 0.95, phase: 5.2 },
 ]
 
 // Mobile : une seule TV qui change de contenu selon le bouton sélectionné

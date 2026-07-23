@@ -32,13 +32,13 @@ const knobGeo = new THREE.CylinderGeometry(0.055, 0.055, 0.05, 10)
 knobGeo.rotateX(Math.PI / 2)
 const slitGeo = new THREE.BoxGeometry(0.2, 0.022, 0.02)
 // Dalle segmentée : le renflement du verre est fait dans le vertex shader
-// Dalle plus large (format 2:1) pour les labels longs comme "Certifications"
-const screenGeo = new THREE.PlaneGeometry(1.8, 0.9, 12, 9)
+// Même format que les télés d'ambiance (1.44:1) ; agrandie via scale dans ScreenTV
+const screenGeo = new THREE.PlaneGeometry(1.44, 1.0, 12, 9)
 // Position de la dalle dans le repère du téléviseur (partagée avec la caméra).
 // Décollée franchement de la façade (0.24 vs 0.21) : à grande distance, un
 // écart d'1 mm passe sous la précision du depth buffer et la façade recouvre
 // la dalle en dehors du bombement — c'était l'ellipse noire sur les télés
-const SCREEN_LOCAL = new THREE.Vector3(-0.15, 0, 0.24)
+const SCREEN_LOCAL = new THREE.Vector3(-0.14, 0, 0.24)
 
 const tvBodyMat = new THREE.MeshStandardMaterial({ color: '#2c2c2c', flatShading: true })
 const tvDetailMat = new THREE.MeshStandardMaterial({ color: '#1a1a1a', flatShading: true })
@@ -67,9 +67,9 @@ function whenFontReady() {
 function makeLabelTexture(label) {
   const canvas = document.createElement('canvas')
   canvas.width = 512
-  canvas.height = 256
+  canvas.height = 356
   const ctx = canvas.getContext('2d')
-  ctx.clearRect(0, 0, 512, 256)
+  ctx.clearRect(0, 0, 512, 356)
   const upper = label.toUpperCase()
   let fontSize = 96
   const maxWidth = 512 - 32
@@ -81,7 +81,7 @@ function makeLabelTexture(label) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillStyle = '#ffffff'
-  ctx.fillText(upper, 256, 128)
+  ctx.fillText(upper, 256, 178)
   const tex = new THREE.CanvasTexture(canvas)
   tex.colorSpace = THREE.SRGBColorSpace
   return tex
@@ -259,10 +259,11 @@ function ScreenTV({ cfg, index, focused, animate, onSelect, registerRef }) {
   return (
     <group
       ref={group}
+      userData={{ scale: cfg.scale || 1.05 }}
       position={[cfg.position[0], cfg.position[1] - 1.4, cfg.position[2] - 34]}
       rotation={[0, cfg.yaw, 0]}
     >
-      <group ref={inner} scale={cfg.scale || 1}>
+      <group ref={inner} scale={cfg.scale || 1.05}>
         {/* Corps du téléviseur */}
         <mesh
           geometry={tvBodyGeo}
@@ -292,18 +293,18 @@ function ScreenTV({ cfg, index, focused, animate, onSelect, registerRef }) {
         </mesh>
         {/* Tube arrière, pieds, boutons, grille son, LED : silhouette cathodique */}
         <mesh geometry={tvHumpGeo} material={tvBodyMat} position={[0, 0, -0.46]} />
-        <mesh geometry={footGeo} material={tvDetailMat} position={[-0.75, -0.735, 0.02]} />
-        <mesh geometry={footGeo} material={tvDetailMat} position={[0.75, -0.735, 0.02]} />
-        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.88, 0.34, 0.225]} />
-        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.88, 0.14, 0.225]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.06, 0.215]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.13, 0.215]} />
-        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.88, -0.2, 0.215]} />
+        <mesh geometry={footGeo} material={tvDetailMat} position={[-0.62, -0.735, 0.02]} />
+        <mesh geometry={footGeo} material={tvDetailMat} position={[0.62, -0.735, 0.02]} />
+        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.76, 0.34, 0.225]} />
+        <mesh geometry={knobGeo} material={tvDetailMat} position={[0.76, 0.14, 0.225]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.06, 0.215]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.13, 0.215]} />
+        <mesh geometry={slitGeo} material={tvDetailMat} position={[0.76, -0.2, 0.215]} />
         <mesh
           ref={ledRef}
           geometry={ledGeo}
           material={ledMat}
-          position={[0.88, -0.45, 0.215]}
+          position={[0.76, -0.45, 0.215]}
           visible={false}
         />
         <mesh
@@ -362,7 +363,7 @@ function RetroGrid({ animate }) {
             vec2 g = abs(fract(p / 2.2) - 0.5);
             float line = smoothstep(0.44, 0.5, max(g.x, g.y));
             float fade = exp(-length(vPos) * 0.045);
-            vec3 col = vec3(1.0, 0.55, 0.08) * line * fade;
+            vec3 col = vec3(1.0, 0.55, 0.08) * line * fade * 1.3;
             gl_FragColor = vec4(col, line * fade * 0.75);
           }
         `}
@@ -886,13 +887,14 @@ function CameraRig({ focusedId, tvRefs, animate, onArrived }) {
     if (tv) {
       // Centre de l'écran en monde (le groupe externe ne subit pas le bob,
       // et la télé focus se stabilise pendant le trajet)
+      const tvScale = tv.userData?.scale || 1.05
       tv.getWorldPosition(_v1)
       tv.getWorldQuaternion(_q1)
-      _v1.add(_v2.copy(SCREEN_LOCAL).applyQuaternion(_q1))
-      // Distance telle que l'écran (1.44 × 1.0) déborde du viewport
+      _v1.add(_v2.copy(SCREEN_LOCAL).multiplyScalar(tvScale).applyQuaternion(_q1))
+      // Distance telle que l'écran (1.44 × 1.0) × scale déborde du viewport
       const halfTan = Math.tan((camera.fov * Math.PI) / 360)
       const dist =
-        0.94 * Math.min(1 / (2 * halfTan), 1.44 / (2 * halfTan * camera.aspect))
+        0.94 * Math.min((1.0 * tvScale) / (2 * halfTan), (1.44 * tvScale) / (2 * halfTan * camera.aspect))
       _v2.set(0, 0, 1).applyQuaternion(_q1)
       _v3.copy(_v1).addScaledVector(_v2, dist)
       pos.current.lerp(_v3, animate ? 0.07 : 1)
@@ -952,11 +954,14 @@ export function Scene3D({ sections, focusedId, zoomed, onSelect, onArrived, anim
           preventDefault: mobile
         }}
       >
-        <color attach="background" args={['#000000']} />
+        <color attach="background" args={['#030305']} />
         {/* Fog noir lointain : les télés émergent progressivement du fond */}
-        <fog attach="fog" args={['#000000', 16, 42]} />
-        <ambientLight intensity={0.75} />
-        <directionalLight position={[4, 6, 8]} intensity={0.85} color="#ffd9a0" />
+        <fog attach="fog" args={['#030305', 16, 42]} />
+        <ambientLight intensity={0.85} />
+        <directionalLight position={[4, 7, 8]} intensity={0.95} color="#ffd9a0" />
+        <hemisphereLight color="#1a1a2e" groundColor="#2b1d0e" intensity={0.45} />
+        {/* Lumière diffuse émise par la grille/poussière sous les télés */}
+        <pointLight position={[0, -0.8, 2]} intensity={0.35} color="#ff7b1c" distance={18} decay={1.5} />
 
         <Starfield />
         <Dust animate={animate} />
